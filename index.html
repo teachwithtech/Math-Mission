@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Math Mission</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand-mini">
+        <span class="brand-icon">🤖</span>
+        <span>AI MATH MISSION</span>
+      </div>
+      <div class="progress-wrap">
+        <span id="progressText">Misi 0%</span>
+        <div class="progress"><div id="progressBar"></div></div>
+      </div>
+    </header>
+
+    <main>
+      <!-- HOME -->
+      <section class="screen active" id="homeScreen">
+        <div class="hero-card">
+          <div class="hero-copy">
+            <div class="eyebrow">🧠 MEDIA PEMBELAJARAN INTERAKTIF</div>
+            <h1>AI MATH<br><span>MISSION</span></h1>
+            <p class="tagline">Jangan Takut Salah</p>
+            <p class="subtagline">Belajar dari Kesalahan</p>
+            <div class="think-pill">THINK • TRY • CHECK • IMPROVE</div>
+            <button class="primary-btn" onclick="showScreen('profileScreen')">🚀 MULAI MISI</button>
+            <p class="tiny-note">“Setiap kesalahan adalah petunjuk untuk belajar.”</p>
+          </div>
+          <div class="hero-mascot">
+            <div class="orbit orbit-1"></div>
+            <div class="orbit orbit-2"></div>
+            <div class="robot">🤖</div>
+            <div class="speech">Hai, Math Explorer!<br><b>Siap belajar dari kesalahan?</b></div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature">🔍 <b>Temukan</b><small>kesalahanmu</small></div>
+          <div class="feature">🤖 <b>Diskusikan</b><small>dengan Mathi</small></div>
+          <div class="feature">💡 <b>Perbaiki</b><small>cara berpikirmu</small></div>
+        </div>
+      </section>
+
+      <!-- PROFILE -->
+      <section class="screen" id="profileScreen">
+        <div class="panel narrow">
+          <div class="mathi-small">🤖</div>
+          <div class="eyebrow">LANGKAH 1</div>
+          <h2>Halo, Math Explorer! 👋</h2>
+          <p class="muted">Kenalan dulu dengan Mathi sebelum memulai misi.</p>
+          <label>Nama kamu</label>
+          <input id="studentName" class="text-input" placeholder="Tulis namamu..." maxlength="30">
+          <label>Kelas</label>
+          <select id="studentClass" class="text-input">
+            <option>VI A</option><option>VI B</option><option>VI C</option>
+          </select>
+          <label>Pilih avatar</label>
+          <div class="avatar-grid" id="avatarGrid">
+            <button class="avatar selected" data-avatar="👦">👦</button>
+            <button class="avatar" data-avatar="👧">👧</button>
+            <button class="avatar" data-avatar="🧑‍🚀">🧑‍🚀</button>
+            <button class="avatar" data-avatar="🧑‍🔬">🧑‍🔬</button>
+            <button class="avatar" data-avatar="🤖">🤖</button>
+          </div>
+          <button class="primary-btn full" onclick="startProfile()">🚀 MULAI PETUALANGAN</button>
+          <button class="ghost-btn" onclick="showScreen('homeScreen')">← Kembali</button>
+        </div>
+      </section>
+
+      <!-- PRETEST INTRO -->
+      <section class="screen" id="pretestIntroScreen">
+        <div class="panel">
+          <div class="mission-icon">📝</div>
+          <div class="eyebrow">LANGKAH 2 • PEMETAAN AWAL</div>
+          <h2>Mari Lihat Cara Berpikirmu</h2>
+          <p class="lead">Tenang. Ini bukan tentang siapa yang paling cepat. Mathi ingin melihat bagaimana kamu berpikir.</p>
+          <div class="rules">
+            <div>🟢 5 soal singkat</div>
+            <div>🔵 Tidak ada petunjuk</div>
+            <div>🟡 Kerjakan sendiri</div>
+          </div>
+          <button class="primary-btn" onclick="startPretest()">📝 MULAI PRETEST</button>
+        </div>
+      </section>
+
+      <!-- PRETEST -->
+      <section class="screen" id="pretestScreen">
+        <div class="panel question-panel">
+          <div class="question-top">
+            <span class="badge">PRETEST</span>
+            <span id="pretestCounter">Soal 1/5</span>
+          </div>
+          <div id="pretestQuestion"></div>
+          <div id="pretestOptions" class="options"></div>
+        </div>
+      </section>
+
+      <!-- DIAGNOSTIC -->
+      <section class="screen" id="diagnosticScreen">
+        <div class="panel">
+          <div class="mission-icon">🔎</div>
+          <div class="eyebrow">HASIL PEMETAAN AWAL</div>
+          <h2 id="diagnosticTitle">Hasilmu sudah siap!</h2>
+          <div id="diagnosticBars" class="metric-list"></div>
+          <div class="coach-box">
+            <div class="coach-avatar">🤖</div>
+            <div><b>Mathi berkata:</b><br>
+              “Aku sudah menemukan beberapa bagian yang bisa kita latih bersama. Yuk masuk ke misi!”
+            </div>
+          </div>
+          <button class="primary-btn" onclick="showScreen('mapScreen')">🗺️ LIHAT MISSION MAP</button>
+        </div>
+      </section>
+
+      <!-- MAP -->
+      <section class="screen" id="mapScreen">
+        <div class="panel wide">
+          <div class="eyebrow">MISSION MAP</div>
+          <h2>Perjalanan Math Explorer 🗺️</h2>
+          <p class="muted">Selesaikan setiap tahap untuk membuka kemampuan baru.</p>
+          <div class="map">
+            <div class="map-node done"><span>🚩</span><b>START</b><small>Profil & Pretest</small></div>
+            <div class="map-line"></div>
+            <button class="map-node active-node" onclick="showScreen('shapeIntroScreen')"><span>🏗️</span><b>SHAPE LAB</b><small>Aktif sekarang</small></button>
+            <div class="map-line"></div>
+            <div class="map-node locked"><span>🔍</span><b>MISTAKE LAB</b><small>Segera terbuka</small></div>
+            <div class="map-line"></div>
+            <div class="map-node locked"><span>🤖</span><b>AI COACH</b><small>Segera terbuka</small></div>
+            <div class="map-line"></div>
+            <div class="map-node locked"><span>🏆</span><b>BOSS CHALLENGE</b><small>Segera terbuka</small></div>
+          </div>
+          <button class="ghost-btn" onclick="showScreen('profileScreen')">← Profil</button>
+        </div>
+      </section>
+
+      <!-- SHAPE INTRO -->
+      <section class="screen" id="shapeIntroScreen">
+        <div class="panel mission-panel">
+          <div class="mission-icon big">🏗️</div>
+          <div class="eyebrow">MISSION 01 • SHAPE LAB</div>
+          <h2>Merancang Taman Sekolah</h2>
+          <p class="lead">Sekolah ingin memperindah halaman dengan taman baru. Kamu dipercaya membantu menghitung ukuran taman dan kebutuhan pagarnya.</p>
+          <div class="mission-card">
+            <div class="mathi-small">🤖</div>
+            <p><b>Mathi:</b> “Seorang Math Explorer bukan hanya mencari jawaban. Ia juga mencari alasan di balik jawabannya.”</p>
+          </div>
+          <button class="primary-btn" onclick="startShapeLab()">🚀 MULAI SHAPE LAB</button>
+        </div>
+      </section>
+
+      <!-- SHAPE LAB -->
+      <section class="screen" id="shapeScreen">
+        <div class="panel question-panel">
+          <div class="question-top">
+            <span class="badge orange">SHAPE LAB</span>
+            <span id="shapeCounter">Soal 1/5</span>
+          </div>
+          <div id="shapeQuestion"></div>
+          <div id="shapeOptions" class="options"></div>
+          <div id="feedbackArea"></div>
+        </div>
+      </section>
+
+      <!-- ERROR -->
+      <section class="screen" id="errorScreen">
+        <div class="panel">
+          <div class="mission-icon">🔍</div>
+          <div class="eyebrow">MISTAKE LAB</div>
+          <h2>Ada sesuatu yang perlu kita selidiki.</h2>
+          <p class="lead">Tidak apa-apa. Kesalahan bisa memberi kita petunjuk.</p>
+          <div class="wrong-answer" id="wrongAnswerBox"></div>
+          <p><b>Menurutmu, apa yang mungkin terjadi?</b></p>
+          <div class="error-options">
+            <button onclick="chooseError('E1')">🧠 Saya belum memahami konsep.</button>
+            <button onclick="chooseError('E2')">🧭 Saya memilih cara yang kurang tepat.</button>
+            <button onclick="chooseError('E3')">📝 Saya salah melakukan langkah.</button>
+            <button onclick="chooseError('E4')">🔢 Saya salah menghitung.</button>
+            <button onclick="chooseError('E5')">❓ Saya belum tahu.</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- COACH -->
+      <section class="screen" id="coachScreen">
+        <div class="panel coach-panel">
+          <div class="coach-header">
+            <div class="coach-avatar large">🤖</div>
+            <div><b>Mathi — Math Coach</b><small>Teman berpikirmu</small></div>
+          </div>
+          <div id="coachContent" class="chat-area"></div>
+          <button class="primary-btn full" onclick="retryShape()">🔄 COBA LAGI</button>
+        </div>
+      </section>
+
+      <!-- REFLECTION -->
+      <section class="screen" id="reflectionScreen">
+        <div class="panel">
+          <div class="mission-icon">💭</div>
+          <div class="eyebrow">REFLEKSI</div>
+          <h2>My Learning Reflection</h2>
+          <p class="muted">Tuliskan perjalanan berpikirmu. Tidak harus panjang.</p>
+          <label>Awalnya saya berpikir...</label>
+          <textarea id="reflect1" class="text-input area" placeholder="Tulis di sini..."></textarea>
+          <label>Setelah mendapat petunjuk, saya menyadari...</label>
+          <textarea id="reflect2" class="text-input area" placeholder="Tulis di sini..."></textarea>
+          <label>Jika menemukan soal seperti ini lagi, saya akan...</label>
+          <textarea id="reflect3" class="text-input area" placeholder="Tulis di sini..."></textarea>
+          <button class="primary-btn full" onclick="finishMission()">🏆 LANJUT KE HASIL MISI</button>
+        </div>
+      </section>
+
+      <!-- RESULT -->
+      <section class="screen" id="resultScreen">
+        <div class="panel result-panel">
+          <div class="celebrate">🎉</div>
+          <div class="eyebrow">MISSION COMPLETE</div>
+          <h2 id="resultTitle">Hebat, Math Explorer!</h2>
+          <p class="lead">Kamu tidak hanya mencari jawaban. Kamu belajar memperbaiki cara berpikirmu.</p>
+          <div id="resultStats" class="result-stats"></div>
+          <div class="badge-card">
+            <div>🔍</div><div><b>ERROR DETECTIVE</b><small>Kamu berani memeriksa dan memperbaiki kesalahan.</small></div>
+          </div>
+          <button class="primary-btn" onclick="showScreen('mapScreen')">🗺️ KEMBALI KE MISSION MAP</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
