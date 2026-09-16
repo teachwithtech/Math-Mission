@@ -56,7 +56,7 @@
             box-shadow: var(--shadow-md);
             overflow: hidden;
             position: relative;
-            min-height: 620px;
+            min-height: 640px;
             display: flex;
             flex-direction: column;
         }
@@ -136,6 +136,14 @@
 
         .btn-warning:hover {
             background: #c2410c;
+        }
+
+        .btn-boss {
+            background: #8b5cf6;
+        }
+
+        .btn-boss:hover {
+            background: #7c3aed;
         }
 
         /* Splash Screen */
@@ -221,7 +229,7 @@
             align-items: center;
             gap: 1rem;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             background: var(--bg-light);
             padding: 1rem 1.5rem;
             border-radius: var(--radius-md);
@@ -377,6 +385,14 @@
         .status-pill.success { background: #d1fae5; color: #065f46; }
         .status-pill.error { background: #fee2e2; color: #991b1b; }
 
+        .boss-badge {
+            background: #f3e8ff;
+            color: #7c3aed;
+            font-weight: 800;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
         @media (max-width: 640px) {
             .options-grid { grid-template-columns: 1fr; }
         }
@@ -471,32 +487,24 @@
                 </div>
             </div>
 
-            <!-- Node 2: Shape Lab (Active) -->
-            <div class="map-node active">
+            <!-- Node 2: Shape Lab -->
+            <div class="map-node active" id="node-shape">
                 <div class="node-icon"><i class="fa-solid fa-shapes"></i></div>
                 <div style="flex: 1;">
-                    <h4 style="font-size: 1rem;">2. Shape Lab (15 Missions)</h4>
+                    <h4 style="font-size: 1rem;">2. Shape Lab</h4>
                     <p style="font-size: 0.85rem; color: var(--text-muted);">Konsep Luas & Keliling</p>
                 </div>
-                <button class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="nextScreen('screen-mission')">MULAI ➔</button>
+                <button class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" id="btn-node-shape" onclick="startShapeLab()">MULAI ➔</button>
             </div>
 
-            <!-- Node 3: Mistake Lab & AI Coach -->
-            <div class="map-node locked">
-                <div class="node-icon"><i class="fa-solid fa-robot"></i></div>
-                <div>
-                    <h4 style="font-size: 1rem;">3. Mathi AI Coach</h4>
-                    <p style="font-size: 0.85rem; color: var(--text-muted);">Analisis Kesalahan & Scaffolding</p>
-                </div>
-            </div>
-
-            <!-- Node 4: Boss Challenge -->
-            <div class="map-node locked">
+            <!-- Node 3: Boss Challenge -->
+            <div class="map-node locked" id="node-boss">
                 <div class="node-icon"><i class="fa-solid fa-trophy"></i></div>
-                <div>
-                    <h4 style="font-size: 1rem;">4. Boss Challenge</h4>
-                    <p style="font-size: 0.85rem; color: var(--text-muted);">Studi Kasus HOTS Merancang Taman</p>
+                <div style="flex: 1;">
+                    <h4 style="font-size: 1rem;">3. Boss Challenge (HOTS)</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Studi Kasus Merancang Taman</p>
                 </div>
+                <button class="btn btn-boss" style="padding: 0.4rem 0.8rem; font-size: 0.85rem; display: none;" id="btn-node-boss" onclick="startBossChallenge()">TANTANG ➔</button>
             </div>
         </div>
     </div>
@@ -521,7 +529,7 @@
             <!-- Options injected via JS -->
         </div>
 
-        <!-- Section "Show My Thinking" Log untuk Soal Ini -->
+        <!-- Section "Show My Thinking" Log -->
         <div class="thinking-card" id="thinking-card" style="display: none;">
             <h4 style="margin-bottom: 0.5rem; color: var(--primary-blue);"><i class="fa-solid fa-code-branch"></i> SHOW MY THINKING</h4>
             <div id="thinking-log"></div>
@@ -541,7 +549,37 @@
         </div>
     </div>
 
-    <!-- SCREEN: TEACHER DASHBOARD -->
+    <!-- SCREEN 07: BOSS CHALLENGE (HOTS CASE STUDY) -->
+    <div class="screen" id="screen-boss">
+        <div class="question-header">
+            <div>
+                <span style="color: #7c3aed; font-weight: 800; font-size: 0.9rem;">FINAL BOSS — HOTS CASE STUDY</span>
+                <h3>Proyek Arsitek Taman Kota</h3>
+            </div>
+            <div class="boss-badge">
+                🏆 Boss Challenge
+            </div>
+        </div>
+
+        <div class="question-card" style="background: #f3e8ff; border: 1px solid #d8b4fe;">
+            <strong>Skenario Kasus:</strong><br>
+            Walikota meminta kamu merancang area rumput di tengah taman berbentuk persegi panjang (25 m × 10 m). Di sekeliling luar area rumput tersebut akan dipasang jalan setapak selebar 2 m. Berapa luas jalan setapak yang harus dibangun?
+        </div>
+
+        <div class="options-grid">
+            <button class="option-btn" onclick="handleBossAnswer(false, 'A. 140 m²')">A. 140 m²</button>
+            <button class="option-btn" onclick="handleBossAnswer(true, 'B. 156 m²')">B. 156 m²</button>
+            <button class="option-btn" onclick="handleBossAnswer(false, 'C. 250 m²')">C. 250 m²</button>
+            <button class="option-btn" onclick="handleBossAnswer(false, 'D. 406 m²')">D. 406 m²</button>
+        </div>
+
+        <div class="thinking-card" id="boss-thinking-card" style="display: none; border-color: #c084fc; background: #faf5ff;">
+            <h4 style="margin-bottom: 0.5rem; color: #7c3aed;"><i class="fa-solid fa-lightbulb"></i> Clue Arsitek:</h4>
+            <p id="boss-clue-text" style="font-size: 0.95rem;"></p>
+        </div>
+    </div>
+
+    <!-- SCREEN 08: TEACHER DASHBOARD -->
     <div class="screen" id="screen-dashboard">
         <h2>📊 Teacher Dashboard — Analytics</h2>
         <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Rekam Jejak & Diagnostik Proses Berpikir Siswa</p>
@@ -551,7 +589,7 @@
                 <h4>Ringkasan Siswa</h4>
                 <p>Nama: <strong id="dash-name">-</strong></p>
                 <p>Kelas: <strong id="dash-class">-</strong></p>
-                <p>Misi Selesai: <strong>2 / 2</strong></p>
+                <p>Misi Selesai: <strong id="dash-completed">3 / 3 (Termasuk Boss Challenge)</strong></p>
             </div>
             <div style="background: #fef3c7; padding: 1rem; border-radius: var(--radius-md);">
                 <h4>Peta Kesalahan (Error Map)</h4>
@@ -612,10 +650,11 @@
     let state = {
         student: { name: '', class: '', avatar: '👩‍🚀' },
         currentQuestionIndex: 0,
+        shapeLabCompleted: false,
         logs: []
     };
 
-    // Bank Soal Demonstrasi (2 Soal Representatif)
+    // Bank Soal Shape Lab (2 Soal Representatif)
     const questions = [
         {
             id: 1,
@@ -680,11 +719,19 @@
     }
 
     function finishPretest(answer) {
-        loadQuestion(0);
         nextScreen('screen-map');
     }
 
-    // Question Engine
+    function startShapeLab() {
+        loadQuestion(0);
+        nextScreen('screen-mission');
+    }
+
+    function startBossChallenge() {
+        nextScreen('screen-boss');
+    }
+
+    // Question Engine - Shape Lab
     function loadQuestion(index) {
         state.currentQuestionIndex = index;
         const q = questions[index];
@@ -693,13 +740,11 @@
         document.getElementById('mission-title').innerText = `Misi ${index + 1} dari ${questions.length}`;
         document.getElementById('question-text').innerText = q.text;
         
-        // Reset Thinking Card Area
         document.getElementById('thinking-card').style.display = 'none';
         document.getElementById('thinking-log').innerHTML = '';
 
-        // Init log for current question
         currentLog = {
-            questionId: q.id,
+            questionId: `Shape Lab - Misi ${q.id}`,
             firstAnswer: null,
             firstCorrect: false,
             errorType: null,
@@ -723,7 +768,6 @@
 
     function handleAnswer(selectedOption, question) {
         if (!currentLog.firstAnswer) {
-            // Jawaban Pertama
             currentLog.firstAnswer = selectedOption.label;
             currentLog.firstCorrect = selectedOption.correct;
 
@@ -731,19 +775,17 @@
                 currentLog.finalCorrect = true;
                 saveLogAndNext();
             } else {
-                // Tampilkan Mistake Lab Modal
                 document.getElementById('coach-hint-text').innerText = question.hintPrompt;
                 document.getElementById('modal-mistake').style.display = 'flex';
             }
         } else {
-            // Jawaban Revisi (Seteah bimbingan AI Coach)
             currentLog.revisedAnswer = selectedOption.label;
             currentLog.finalCorrect = selectedOption.correct;
 
             if (selectedOption.correct) {
                 nextScreen('screen-reflection');
             } else {
-                alert('Jawaban masih belum tepat. Mari periksa petunjuk Mathi Coach sekali lagi!');
+                alert('Jawaban masih belum tepat. Coba periksa petunjuk Mathi Coach sekali lagi!');
                 document.getElementById('modal-mistake').style.display = 'flex';
             }
         }
@@ -756,7 +798,6 @@
 
         document.getElementById('modal-mistake').style.display = 'none';
 
-        // Render "Show My Thinking" Log di bawah Soal
         const logBox = document.getElementById('thinking-log');
         logBox.innerHTML = `
             <div class="thinking-step">
@@ -787,8 +828,46 @@
             loadQuestion(state.currentQuestionIndex + 1);
             nextScreen('screen-mission');
         } else {
+            // Selesai Shape Lab ➔ Buka Boss Challenge di Mission Map
+            state.shapeLabCompleted = true;
+            
+            // Update Tampilan Node Mission Map
+            const shapeNode = document.getElementById('node-shape');
+            shapeNode.classList.remove('active');
+            shapeNode.classList.add('completed');
+            document.getElementById('btn-node-shape').style.display = 'none';
+
+            const bossNode = document.getElementById('node-boss');
+            bossNode.classList.remove('locked');
+            bossNode.classList.add('active');
+            document.getElementById('btn-node-boss').style.display = 'inline-flex';
+
+            nextScreen('screen-map');
+        }
+    }
+
+    // Boss Challenge Logic
+    function handleBossAnswer(isCorrect, label) {
+        const clueCard = document.getElementById('boss-thinking-card');
+        const clueText = document.getElementById('boss-clue-text');
+
+        if (isCorrect) {
+            state.logs.push({
+                questionId: 'Boss Challenge (HOTS)',
+                firstAnswer: label,
+                firstCorrect: true,
+                errorType: null,
+                coachHint: 'Menghitung (Luas Taman + Jalan) dikurangi Luas Rumput',
+                revisedAnswer: null,
+                finalCorrect: true,
+                reflection: 'Menyelesaikan tantangan integratif HOTS!'
+            });
+
             renderDashboard();
             nextScreen('screen-dashboard');
+        } else {
+            clueText.innerText = "Ingat! Tambahkan 2 m di setiap sisi (kiri, kanan, atas, bawah). Panjang total taman baru = 25 + 2 + 2 = 29 m, dan Lebar total baru = 10 + 2 + 2 = 14 m. Luas Jalan = (Luas Total) - (Luas Rumput).";
+            clueCard.style.display = 'block';
         }
     }
 
@@ -814,15 +893,15 @@
                 .join('');
         }
 
-        // Render Show My Thinking Detailed Cards
+        // Detailed Thinking Logs
         const detailsContainer = document.getElementById('dashboard-thinking-details');
         detailsContainer.innerHTML = '';
 
-        state.logs.forEach((log, idx) => {
+        state.logs.forEach((log) => {
             const card = document.createElement('div');
             card.className = 'thinking-card';
             card.innerHTML = `
-                <h4 style="color: var(--primary-blue);">Misi ${idx + 1}</h4>
+                <h4 style="color: var(--primary-blue);">${log.questionId}</h4>
                 <div class="thinking-step"><strong>Jawaban Awal:</strong> ${log.firstAnswer} ${log.firstCorrect ? '<span class="status-pill success">Langsung Benar</span>' : '<span class="status-pill error">Salah</span>'}</div>
                 ${log.errorType ? `<div class="thinking-step"><strong>Jenis Kesalahan:</strong> ${log.errorType}</div>` : ''}
                 ${log.coachHint ? `<div class="thinking-step"><strong>Scaffolding AI:</strong> "${log.coachHint}"</div>` : ''}
@@ -836,12 +915,24 @@
     function resetApp() {
         state.logs = [];
         state.currentQuestionIndex = 0;
+        state.shapeLabCompleted = false;
         state.student = { name: '', class: '', avatar: '👩‍🚀' };
         
         document.getElementById('input-name').value = '';
         document.getElementById('input-class').value = '';
         document.getElementById('nav-user').style.display = 'none';
         
+        // Reset Map UI
+        const shapeNode = document.getElementById('node-shape');
+        shapeNode.classList.add('active');
+        shapeNode.classList.remove('completed');
+        document.getElementById('btn-node-shape').style.display = 'inline-flex';
+
+        const bossNode = document.getElementById('node-boss');
+        bossNode.classList.add('locked');
+        bossNode.classList.remove('active');
+        document.getElementById('btn-node-boss').style.display = 'none';
+
         nextScreen('screen-splash');
     }
 </script>
