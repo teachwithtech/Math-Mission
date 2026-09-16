@@ -836,6 +836,23 @@ function answerShape(i) {
   updateProgress("errorScreen");
 
 }
+function chooseError(type) {
+
+  // Simpan jenis kesalahan yang dipilih siswa
+  state.selectedError = type;
+
+  // Simpan pilihan siswa pada catatan kesalahan terakhir
+  if (state.errors.length > 0) {
+
+    const lastError =
+      state.errors[state.errors.length - 1];
+
+    lastError.selectedByStudent = type;
+  }
+
+  // Masuk ke Mathi Coach
+  showCoach(type);
+}
 
 function showCoach(type){
 
