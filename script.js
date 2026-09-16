@@ -735,6 +735,10 @@ function renderShapeQuestion(){
 
 }
 
+// ============================================
+// JAWAB SOAL SHAPE
+// ============================================
+
 function answerShape(i) {
 
   const q = state.currentQuestion;
@@ -748,27 +752,33 @@ function answerShape(i) {
 
   const selectedAnswer = q.opts[i];
 
-  // =========================
+  // ==========================================
   // JAWABAN BENAR
-  // =========================
+  // ==========================================
 
   if (i === q.a) {
 
     state.shapeScore++;
 
+    // Jika sebelumnya salah, berarti berhasil memperbaiki
     if (state.currentWrongAnswer !== null) {
 
       state.correctedCount =
         (state.correctedCount || 0) + 1;
 
-      toast("🎉 Hebat! Kamu berhasil memperbaiki jawabanmu.");
+      toast(
+        "🎉 Hebat! Kamu berhasil memperbaiki jawabanmu."
+      );
 
     } else {
 
+      // Benar pada percobaan pertama
       state.firstTryCorrect =
         (state.firstTryCorrect || 0) + 1;
 
-      toast("⭐ Mantap! Jawabanmu tepat.");
+      toast(
+        "⭐ Mantap! Jawabanmu tepat."
+      );
     }
 
     state.currentWrongAnswer = null;
@@ -781,9 +791,10 @@ function answerShape(i) {
     return;
   }
 
-  // =========================
+
+  // ==========================================
   // JAWABAN SALAH
-  // =========================
+  // ==========================================
 
   state.currentWrongAnswer = selectedAnswer;
 
@@ -792,6 +803,8 @@ function answerShape(i) {
       ? q.errorMap[i]
       : "E1";
 
+
+  // Simpan kesalahan
   state.errors.push({
 
     questionId: q.id,
@@ -808,9 +821,10 @@ function answerShape(i) {
 
   });
 
-  // =========================
+
+  // ==========================================
   // ISI MISTAKE LAB
-  // =========================
+  // ==========================================
 
   const wrongQuestion =
     document.getElementById("wrongQuestion");
@@ -818,46 +832,49 @@ function answerShape(i) {
   const wrongAnswerBox =
     document.getElementById("wrongAnswerBox");
 
+
   if (wrongQuestion) {
     wrongQuestion.textContent = q.q;
   }
+
 
   if (wrongAnswerBox) {
     wrongAnswerBox.textContent =
       selectedAnswer;
   }
-  
- if (wrongAnswerBox) {
-    wrongAnswerBox.textContent =
-      selectedAnswer;
-  }
+
 
   // Pindah ke Mistake Lab
   showScreen("errorScreen");
+
   updateProgress("errorScreen");
+
 }
 
 
 // ============================================
-// MISTAKE LAB
+// PILIH JENIS KESALAHAN
 // ============================================
 
 function chooseError(type) {
 
-  // Simpan pilihan jenis kesalahan siswa
   state.selectedError = type;
 
-  // Simpan pilihan tersebut ke error terakhir
+
+  // Simpan pilihan siswa
   if (state.errors.length > 0) {
 
     const lastError =
       state.errors[state.errors.length - 1];
 
     lastError.selectedByStudent = type;
+
   }
 
-  // Buka Mathi Coach
+
+  // Tampilkan Mathi Coach
   showCoach(type);
+
 }
 
 
@@ -870,55 +887,74 @@ function showCoach(type) {
   const coachContent =
     document.getElementById("coachContent");
 
+
   const coachScripts = {
 
     E1: {
       title: "🧠 Periksa Konsepmu",
+
       message:
         "Coba ingat kembali konsep yang digunakan dalam soal ini.",
+
       prompt:
         "Apa yang sebenarnya sedang dicari oleh soal?"
     },
 
+
     E2: {
       title: "🧭 Periksa Strategimu",
+
       message:
         "Strategi yang kamu pilih mungkin belum sesuai dengan informasi soal.",
+
       prompt:
         "Operasi atau cara apa yang paling sesuai untuk menyelesaikan soal ini?"
     },
 
+
     E3: {
       title: "🔢 Periksa Langkahmu",
+
       message:
         "Coba periksa pekerjaanmu langkah demi langkah.",
+
       prompt:
         "Pada langkah mana kamu mulai mendapatkan hasil yang berbeda?"
     },
 
+
     E4: {
       title: "🧮 Periksa Hitunganmu",
+
       message:
         "Konsepmu mungkin sudah benar. Sekarang periksa kembali perhitungannya.",
+
       prompt:
         "Apakah setiap angka dan operasi hitungmu sudah tepat?"
     },
 
+
     E5: {
       title: "🔎 Baca Kembali Soal",
+
       message:
         "Mungkin ada informasi dalam soal yang terlewat.",
+
       prompt:
         "Apa yang diketahui dan apa yang sebenarnya ditanyakan?"
     }
 
   };
 
+
   const coach =
     coachScripts[type] || coachScripts.E1;
 
 
-  // Tampilkan pesan Mathi
+  // ==========================================
+  // TAMPILKAN PESAN MATHI
+  // ==========================================
+
   if (coachContent) {
 
     coachContent.innerHTML = `
@@ -952,13 +988,15 @@ function showCoach(type) {
   }
 
 
-  // Pindah ke halaman Coach
+  // ==========================================
+  // PINDAH KE COACH
+  // ==========================================
+
   showScreen("coachScreen");
 
   updateProgress("coachScreen");
+
 }
-
-
 // ============================================
 // COBA LAGI
 // ============================================
