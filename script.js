@@ -434,31 +434,96 @@ const shapeQuestions = [
 
 ];
 const coachScripts = {
-  E1: [
-    "Mari kita periksa konsepnya. Kamu sedang mencari luas atau keliling?",
-    "Bagus. Sekarang bayangkan taman tertutup oleh kotak-kotak kecil. Apakah kita menghitung banyak kotak di dalam taman atau panjang garis di sekelilingnya?",
-    "Untuk luas persegi panjang, kita menghubungkan panjang dan lebar dengan operasi perkalian. Sekarang coba kembali."
-  ],
-  E2: [
-    "Jawabanmu menunjukkan bahwa kamu sudah mencoba sebuah strategi. Mari kita cek apakah strategi itu sesuai dengan yang ditanyakan.",
-    "Apa informasi penting yang diberikan soal? Panjang, lebar, luas, atau keliling?",
-    "Pilih operasi yang paling sesuai dengan hubungan informasi tersebut, lalu coba lagi."
-  ],
-  E3: [
-    "Konsepmu mungkin sudah tepat. Sekarang kita periksa urutan langkahnya.",
-    "Tulis langkah pertama yang menurutmu harus dilakukan. Setelah itu, cek apakah langkah berikutnya mengikuti aturan yang sama.",
-    "Perbaiki satu langkah saja terlebih dahulu, kemudian hitung kembali."
-  ],
-  E4: [
-    "Strategimu terlihat sudah mengarah benar. Mari kita periksa hitungannya.",
-    "Coba hitung kembali dengan lebih pelan. Pisahkan puluhan dan satuannya jika perlu.",
-    "Sekarang bandingkan hasil hitunganmu dengan perkiraan. Apakah hasilnya masuk akal?"
-  ],
-  E5: [
-    "Tidak masalah jika kamu belum tahu. Kita mulai dari informasi yang paling mudah.",
-    "Apa yang diketahui dari soal? Sebutkan panjang dan lebarnya.",
-    "Sekarang tentukan: soal ini meminta luas atau keliling. Dari sana kita lanjutkan."
-  ]
+
+  E1: {
+    name: "Concept Error",
+    icon: "🧠",
+    color: "blue",
+
+    title: "Mari periksa konsepnya.",
+
+    steps: [
+      "Kamu sedang mencari <strong>luas</strong> atau <strong>keliling</strong>?",
+      "Luas menunjukkan bagian yang berada <strong>di dalam</strong> bangun. Keliling menunjukkan panjang garis yang <strong>mengelilingi</strong> bangun.",
+      "Untuk persegi panjang, luas dihitung dengan <strong>panjang × lebar</strong>."
+    ],
+
+    finalPrompt:
+      "Sekarang coba gunakan konsep yang tepat untuk menjawab soal."
+  },
+
+
+  E2: {
+    name: "Strategy Error",
+    icon: "🧭",
+    color: "yellow",
+
+    title: "Mari cari strategi yang lebih tepat.",
+
+    steps: [
+      "Jangan langsung menghitung. Baca kembali informasi penting dalam soal.",
+      "Apa yang diketahui? Panjang, lebar, luas, keliling, atau harga?",
+      "Sekarang tentukan operasi yang menghubungkan informasi tersebut."
+    ],
+
+    finalPrompt:
+      "Pilih strategi yang paling sesuai, lalu coba lagi."
+  },
+
+
+  E3: {
+    name: "Procedure Error",
+    icon: "🔢",
+    color: "orange",
+
+    title: "Mari periksa urutan langkahmu.",
+
+    steps: [
+      "Konsepmu mungkin sudah benar. Sekarang kita periksa langkahnya.",
+      "Apa yang harus dilakukan terlebih dahulu?",
+      "Setelah mendapatkan hasil pertama, langkah apa yang harus dilakukan berikutnya?"
+    ],
+
+    finalPrompt:
+      "Coba ulangi langkahnya satu per satu dengan lebih teliti."
+  },
+
+
+  E4: {
+    name: "Calculation Error",
+    icon: "🧮",
+    color: "red",
+
+    title: "Strategimu sudah mengarah benar. Mari cek hitungannya.",
+
+    steps: [
+      "Coba hitung kembali dengan lebih pelan.",
+      "Pisahkan angka menjadi puluhan dan satuan jika diperlukan.",
+      "Bandingkan hasilmu dengan perkiraan. Apakah hasilnya masuk akal?"
+    ],
+
+    finalPrompt:
+      "Periksa kembali operasi hitungmu sebelum memilih jawaban."
+  },
+
+
+  E5: {
+    name: "Interpretation Error",
+    icon: "🔎",
+    color: "purple",
+
+    title: "Mari baca kembali makna soalnya.",
+
+    steps: [
+      "Apa sebenarnya yang ditanyakan dalam soal?",
+      "Tuliskan informasi yang diketahui: panjang, lebar, luas, keliling, atau harga.",
+      "Perhatikan juga satuannya. Apakah yang dicari satuan panjang, luas, atau biaya?"
+    ],
+
+    finalPrompt:
+      "Setelah memahami informasi soal, coba tentukan jawabannya kembali."
+  }
+
 };
 
 function showScreen(id){
@@ -725,49 +790,153 @@ function answerShape(i){
 
   setTimeout(() => {
 
-    document.getElementById("wrongAnswerBox").innerHTML = `
+  document.getElementById("wrongAnswerBox").innerHTML = `
 
-      <div class="wrong-summary">
+    <div class="wrong-summary">
 
-        <div>
-          🧩 <strong>Misi ${q.id}</strong>
-        </div>
+      <div class="error-title">
+        🔎 MARI SELIDIKI CARA BERPIKIRMU
+      </div>
 
-        <p>${q.q}</p>
+      <p>
+        ${q.q}
+      </p>
 
-        <div class="wrong-answer">
-          ❌ Jawabanmu:
-          <strong>${q.opts[i]}</strong>
-        </div>
+      <div class="wrong-answer">
 
-        <div class="coach-hint">
-          💡 ${q.hint}
-        </div>
+        ❌ Jawabanmu:
+
+        <strong>
+          ${q.opts[i]}
+        </strong>
 
       </div>
 
-    `;
+      <p class="error-question">
 
-    showScreen("errorScreen");
+        Menurutmu, apa yang menyebabkan jawabanmu
+        belum tepat?
 
-  }, 700);
-}
+      </p>
+
+    </div>
+
+  `;
+
+
+  showScreen("errorScreen");
+
+}, 700);
 
 function chooseError(type){
-  state.selectedError=type;
+
+  state.selectedError = type;
+
+  // Simpan jenis kesalahan pada percobaan saat ini
+  if(state.errors.length > 0){
+
+    const lastError =
+      state.errors[state.errors.length - 1];
+
+    lastError.selectedByStudent = type;
+
+  }
+
   showCoach(type);
+
 }
 
 function showCoach(type){
-  const scripts=coachScripts[type]||coachScripts.E5;
-  const box=document.getElementById("coachContent");
-  box.innerHTML=`
-    <div class="chat-bubble mathi">🤖 <b>Mathi:</b> ${scripts[0]}</div>
-    <div class="chat-bubble student">🧑 ${type==="E5"?"Aku akan mencoba memikirkannya lagi.":"Aku akan memeriksa cara berpikirku."}</div>
-    <div class="chat-bubble mathi">🤖 ${scripts[1]}</div>
-    <div class="chat-bubble mathi">🤖 ${scripts[2]}</div>
+
+  const coach =
+    coachScripts[type] || coachScripts.E5;
+
+  const box =
+    document.getElementById("coachContent");
+
+
+  box.innerHTML = `
+
+    <div class="mathi-header">
+
+      <div class="mathi-avatar">
+        🤖
+      </div>
+
+      <div>
+
+        <strong>Mathi Coach</strong>
+
+        <small>
+          ${coach.name}
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div class="chat-bubble mathi">
+
+      🤖 <strong>Mathi:</strong>
+
+      ${coach.title}
+
+    </div>
+
+
+    <div class="error-badge">
+
+      ${coach.icon}
+
+      ${coach.name}
+
+    </div>
+
+
+    <div class="coach-steps">
+
+      ${coach.steps.map((step,index)=>`
+
+        <div class="coach-step">
+
+          <span class="step-number">
+            ${index + 1}
+          </span>
+
+          <p>
+            ${step}
+          </p>
+
+        </div>
+
+      `).join("")}
+
+    </div>
+
+
+    <div class="chat-bubble mathi">
+
+      🤖 <strong>Mathi:</strong>
+
+      ${coach.finalPrompt}
+
+    </div>
+
+
+    <button
+      class="primary-btn"
+      onclick="retryShape()">
+
+      🔄 COBA LAGI
+
+    </button>
+
   `;
+
+
   showScreen("coachScreen");
+
 }
 
 function retryShape(){
