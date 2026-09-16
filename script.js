@@ -826,8 +826,19 @@ function answerShape(i) {
     wrongAnswerBox.textContent =
       selectedAnswer;
   }
+  
+ if (wrongAnswerBox) {
+    wrongAnswerBox.textContent =
+      selectedAnswer;
+  }
 
-  // ============================================
+  // Pindah ke Mistake Lab
+  showScreen("errorScreen");
+  updateProgress("errorScreen");
+}
+
+
+// ============================================
 // MISTAKE LAB
 // ============================================
 
