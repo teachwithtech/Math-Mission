@@ -325,7 +325,7 @@
         <div style="font-weight: 800; font-size: 1.1rem;"><i class="fa-solid fa-robot"></i> AI MATH MISSION</div>
         <div class="user-badge" id="nav-user" style="display: none;">
             <span id="nav-avatar">👩‍🚀</span>
-            <span id="nav-name">Alya</span>
+            <span id="nav-name"></span>
         </div>
     </div>
 
@@ -346,12 +346,12 @@
     <div class="screen" id="screen-profile">
         <h2 style="margin-bottom: 1.5rem;">Profil Penjelajah</h2>
         <div class="form-group">
-            <label>Nama Lengkap</label>
-            <input type="text" id="input-name" class="form-control" placeholder="Masukkan namamu..." value="Alya">
+            <label>Nama Lengkap <span style="color: red;">*</span></label>
+            <input type="text" id="input-name" class="form-control" placeholder="Masukkan namamu..." value="">
         </div>
         <div class="form-group">
-            <label>Kelas</label>
-            <input type="text" id="input-class" class="form-control" placeholder="Contoh: VI A" value="VI A">
+            <label>Kelas <span style="color: red;">*</span></label>
+            <input type="text" id="input-class" class="form-control" placeholder="Contoh: VI A" value="">
         </div>
         <div class="form-group">
             <label>Pilih Avatar</label>
@@ -415,8 +415,8 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
             <div style="background: #eff6ff; padding: 1rem; border-radius: var(--radius-md);">
                 <h4>Ringkasan Siswa</h4>
-                <p>Nama: <strong id="dash-name">Alya</strong></p>
-                <p>Kelas: <strong id="dash-class">VI A</strong></p>
+                <p>Nama: <strong id="dash-name">-</strong></p>
+                <p>Kelas: <strong id="dash-class">-</strong></p>
                 <p>Misi Selesai: <strong>2 / 2</strong></p>
             </div>
             <div style="background: #fef3c7; padding: 1rem; border-radius: var(--radius-md);">
@@ -476,7 +476,7 @@
 <script>
     // State Management
     let state = {
-        student: { name: 'Alya', class: 'VI A', avatar: '👩‍🚀' },
+        student: { name: '', class: '', avatar: '👩‍🚀' },
         currentQuestionIndex: 0,
         logs: []
     };
@@ -527,8 +527,16 @@
     }
 
     function saveProfile() {
-        state.student.name = document.getElementById('input-name').value || 'Alya';
-        state.student.class = document.getElementById('input-class').value || 'VI A';
+        const nameInput = document.getElementById('input-name').value.trim();
+        const classInput = document.getElementById('input-class').value.trim();
+
+        if (!nameInput || !classInput) {
+            alert('Mohon isi Nama Lengkap dan Kelas terlebih dahulu!');
+            return;
+        }
+
+        state.student.name = nameInput;
+        state.student.class = classInput;
         
         document.getElementById('nav-name').innerText = state.student.name;
         document.getElementById('nav-avatar').innerText = state.student.avatar;
@@ -690,6 +698,12 @@
     function resetApp() {
         state.logs = [];
         state.currentQuestionIndex = 0;
+        state.student = { name: '', class: '', avatar: '👩‍🚀' };
+        
+        document.getElementById('input-name').value = '';
+        document.getElementById('input-class').value = '';
+        document.getElementById('nav-user').style.display = 'none';
+        
         nextScreen('screen-splash');
     }
 </script>
