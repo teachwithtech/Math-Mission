@@ -171,21 +171,151 @@
 
       <!-- ERROR -->
       <section class="screen" id="errorScreen">
-        <div class="panel">
-          <div class="mission-icon">🔍</div>
-          <div class="eyebrow">MISTAKE LAB</div>
-          <h2>Ada sesuatu yang perlu kita selidiki.</h2>
-          <p class="lead">Tidak apa-apa. Kesalahan bisa memberi kita petunjuk.</p>
-          <div class="wrong-answer" id="wrongAnswerBox"></div>
-          <p><b>Menurutmu, apa yang mungkin terjadi?</b></p>
-          <div class="error-options">
-            <button onclick="chooseError('E1')">🧠 Saya belum memahami konsep.</button>
-            <button onclick="chooseError('E2')">🧭 Saya memilih cara yang kurang tepat.</button>
-            <button onclick="chooseError('E3')">📝 Saya salah melakukan langkah.</button>
-            <button onclick="chooseError('E4')">🔢 Saya salah menghitung.</button>
-            <button onclick="chooseError('E5')">❓ Saya belum tahu.</button>
-          </div>
-        </div>
+        <!-- ERROR -->
+<section class="screen" id="errorScreen">
+
+  <div class="screen-card mistake-card">
+
+    <div class="section-badge">
+      🧪 MISTAKE LAB
+    </div>
+
+    <h2>Jangan Takut Salah!</h2>
+
+    <p class="mistake-intro">
+      Kesalahanmu adalah petunjuk untuk menemukan
+      cara berpikir yang lebih baik.
+    </p>
+
+    <!-- SOAL -->
+    <div class="mistake-box">
+
+      <div class="box-label">
+        🔎 SOALMU
+      </div>
+
+      <div id="wrongQuestion" class="wrong-question">
+        Soal akan muncul di sini.
+      </div>
+
+    </div>
+
+    <!-- JAWABAN SISWA -->
+    <div class="mistake-box wrong-answer-card">
+
+      <div class="box-label">
+        💭 JAWABANMU
+      </div>
+
+      <div id="wrongAnswerBox">
+        Jawabanmu akan muncul di sini.
+      </div>
+
+    </div>
+
+    <!-- PERTANYAAN -->
+    <div class="mistake-question">
+
+      <span>🤔</span>
+
+      <strong>
+        Menurutmu, apa yang menyebabkan
+        jawabanmu belum tepat?
+      </strong>
+
+    </div>
+
+    <p class="choose-error-title">
+      Pilih yang paling sesuai dengan cara berpikirmu:
+    </p>
+
+    <!-- PILIH JENIS KESALAHAN -->
+    <div class="error-buttons">
+
+      <button
+        class="error-choice e1"
+        onclick="chooseError('E1')">
+
+        🧠
+
+        <span>
+          <strong>E1 — Konsep</strong>
+          <small>
+            Saya salah memahami konsep
+          </small>
+        </span>
+
+      </button>
+
+
+      <button
+        class="error-choice e2"
+        onclick="chooseError('E2')">
+
+        🧭
+
+        <span>
+          <strong>E2 — Strategi</strong>
+          <small>
+            Saya memilih strategi yang kurang tepat
+          </small>
+        </span>
+
+      </button>
+
+
+      <button
+        class="error-choice e3"
+        onclick="chooseError('E3')">
+
+        🔢
+
+        <span>
+          <strong>E3 — Prosedur</strong>
+          <small>
+            Langkah saya keliru
+          </small>
+        </span>
+
+      </button>
+
+
+      <button
+        class="error-choice e4"
+        onclick="chooseError('E4')">
+
+        🧮
+
+        <span>
+          <strong>E4 — Perhitungan</strong>
+          <small>
+            Saya salah menghitung
+          </small>
+        </span>
+
+      </button>
+
+
+      <button
+        class="error-choice e5"
+        onclick="chooseError('E5')">
+
+        🔎
+
+        <span>
+          <strong>E5 — Interpretasi</strong>
+          <small>
+            Saya kurang memahami informasi soal
+          </small>
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
       </section>
 
       <!-- COACH -->
