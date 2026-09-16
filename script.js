@@ -24,39 +24,415 @@ const pretestQuestions = [
 ];
 
 const shapeQuestions = [
-  {
-    q:"Taman berbentuk persegi panjang. Panjangnya 20 m dan lebarnya 12 m. Berapa luas taman?",
-    diagram:true,
-    opts:["32 m²","64 m²","240 m²","384 m²"], a:2,
-    errorMap:{0:"E1",1:"E2",3:"E4"},
-    hint:"Untuk mencari luas persegi panjang, perhatikan hubungan panjang dan lebar."
-  },
-  {
-    q:"Sebuah taman berukuran 15 m × 8 m. Berapa luasnya?",
-    opts:["23 m²","46 m²","120 m²","240 m²"], a:2,
-    errorMap:{0:"E1",1:"E2",3:"E4"},
-    hint:"Coba ingat operasi yang digunakan untuk mencari banyaknya satuan persegi yang menutupi taman."
-  },
-  {
-    q:"Persegi panjang memiliki panjang 18 m dan lebar 7 m. Berapa kelilingnya?",
-    opts:["25 m","50 m","126 m","144 m"], a:1,
-    errorMap:{0:"E1",2:"E4",3:"E4"},
-    hint:"Keliling adalah jarak yang mengelilingi seluruh sisi. Ada dua pasang sisi yang sama panjang."
-  },
-  {
-    q:"Taman memiliki luas 240 m². Jika panjangnya 20 m, berapa lebarnya?",
-    opts:["10 m","12 m","15 m","20 m"], a:1,
-    errorMap:{0:"E2",2:"E4",3:"E4"},
-    hint:"Jika luas diketahui dan panjang diketahui, pikirkan hubungan luas = panjang × lebar."
-  },
-  {
-    q:"Taman A berukuran 20 × 12 m dan Taman B berukuran 24 × 10 m. Pernyataan yang tepat adalah...",
-    opts:["A lebih luas","B lebih luas","Luas keduanya sama","Tidak dapat dibandingkan"], a:2,
-    errorMap:{0:"E1",1:"E4",3:"E2"},
-    hint:"Bandingkan luas kedua taman dengan menghitung panjang × lebar."
-  }
-];
 
+  // =====================================
+  // LEVEL 1 — UNDERSTANDING
+  // =====================================
+
+  {
+    id: 1,
+    level: 1,
+    levelName: "UNDERSTANDING",
+
+    q: "Taman berbentuk persegi panjang. Panjangnya 20 m dan lebarnya 12 m. Berapa luas taman?",
+
+    diagram: true,
+
+    opts: [
+      "32 m²",
+      "64 m²",
+      "240 m²",
+      "384 m²"
+    ],
+
+    a: 2,
+
+    errorMap: {
+      0: "E1",
+      1: "E2",
+      3: "E4"
+    },
+
+    hint: "Untuk mencari luas persegi panjang, perhatikan hubungan panjang dan lebar."
+  },
+
+
+  {
+    id: 2,
+    level: 1,
+    levelName: "UNDERSTANDING",
+
+    q: "Sebuah taman berukuran 15 m × 8 m. Berapa luasnya?",
+
+    opts: [
+      "23 m²",
+      "46 m²",
+      "120 m²",
+      "240 m²"
+    ],
+
+    a: 2,
+
+    errorMap: {
+      0: "E1",
+      1: "E2",
+      3: "E4"
+    },
+
+    hint: "Luas persegi panjang dapat ditemukan dengan mengalikan panjang dan lebar."
+  },
+
+
+  {
+    id: 3,
+    level: 1,
+    levelName: "UNDERSTANDING",
+
+    q: "Sebuah taman berbentuk persegi memiliki panjang sisi 9 m. Berapa keliling taman?",
+
+    opts: [
+      "18 m",
+      "27 m",
+      "36 m",
+      "81 m"
+    ],
+
+    a: 2,
+
+    errorMap: {
+      0: "E2",
+      1: "E3",
+      3: "E4"
+    },
+
+    hint: "Keliling adalah panjang seluruh sisi yang mengelilingi bangun."
+  },
+
+
+  {
+    id: 4,
+    level: 1,
+    levelName: "UNDERSTANDING",
+
+    q: "Persegi panjang memiliki panjang 18 m dan lebar 7 m. Berapa kelilingnya?",
+
+    opts: [
+      "25 m",
+      "50 m",
+      "126 m",
+      "144 m"
+    ],
+
+    a: 1,
+
+    errorMap: {
+      0: "E2",
+      2: "E4",
+      3: "E4"
+    },
+
+    hint: "Keliling = 2 × (panjang + lebar)."
+  },
+
+
+  // =====================================
+  // LEVEL 2 — APPLICATION
+  // =====================================
+
+  {
+    id: 5,
+    level: 2,
+    levelName: "APPLICATION",
+
+    q: "Taman A berukuran 20 × 12 m dan Taman B berukuran 24 × 10 m. Pernyataan yang tepat adalah...",
+
+    opts: [
+      "Taman A lebih luas",
+      "Taman B lebih luas",
+      "Luas keduanya sama",
+      "Tidak dapat dibandingkan"
+    ],
+
+    a: 2,
+
+    errorMap: {
+      0: "E1",
+      1: "E4",
+      3: "E2"
+    },
+
+    hint: "Hitung luas masing-masing taman terlebih dahulu."
+  },
+
+
+  {
+    id: 6,
+    level: 2,
+    levelName: "APPLICATION",
+
+    q: "Sebuah taman memiliki luas 240 m². Jika panjangnya 20 m, berapa lebarnya?",
+
+    opts: [
+      "10 m",
+      "12 m",
+      "15 m",
+      "20 m"
+    ],
+
+    a: 1,
+
+    errorMap: {
+      0: "E2",
+      2: "E4",
+      3: "E4"
+    },
+
+    hint: "Gunakan hubungan luas = panjang × lebar."
+  },
+
+
+  {
+    id: 7,
+    level: 2,
+    levelName: "APPLICATION",
+
+    q: "Taman sekolah berukuran 20 m × 12 m akan dipagari seluruh sisinya. Berapa meter pagar yang dibutuhkan?",
+
+    opts: [
+      "32 m",
+      "64 m",
+      "120 m",
+      "240 m"
+    ],
+
+    a: 1,
+
+    errorMap: {
+      0: "E1",
+      2: "E4",
+      3: "E1"
+    },
+
+    hint: "Karena pagar mengelilingi taman, kamu perlu mencari keliling."
+  },
+
+
+  {
+    id: 8,
+    level: 2,
+    levelName: "APPLICATION",
+
+    q: "Pagar taman membutuhkan 64 m pagar. Harga pagar adalah Rp25.000 per meter. Berapa biaya yang diperlukan?",
+
+    opts: [
+      "Rp640.000",
+      "Rp1.200.000",
+      "Rp1.600.000",
+      "Rp2.500.000"
+    ],
+
+    a: 2,
+
+    errorMap: {
+      0: "E4",
+      1: "E4",
+      3: "E2"
+    },
+
+    hint: "Biaya total = panjang pagar × harga setiap meter."
+  },
+
+
+  // =====================================
+  // LEVEL 3 — ANALYSIS
+  // =====================================
+
+  {
+    id: 9,
+    level: 3,
+    levelName: "ANALYSIS",
+
+    q: "Taman A berukuran 20 m × 12 m. Taman B berukuran 15 m × 16 m. Pernyataan yang benar adalah...",
+
+    opts: [
+      "Luas A lebih besar daripada B",
+      "Luas B lebih besar daripada A",
+      "Luas keduanya sama, tetapi kelilingnya berbeda",
+      "Luas dan keliling keduanya sama"
+    ],
+
+    a: 2,
+
+    errorMap: {
+      0: "E2",
+      1: "E4",
+      3: "E1"
+    },
+
+    hint: "Jangan hanya membandingkan luas. Periksa juga keliling kedua taman."
+  },
+
+
+  {
+    id: 10,
+    level: 3,
+    levelName: "ANALYSIS",
+
+    q: "Beni menghitung luas taman 20 m × 12 m seperti ini: 20 + 12 = 32 m². Apa kesalahan Beni?",
+
+    opts: [
+      "Salah menghitung panjang",
+      "Salah menghitung lebar",
+      "Salah memilih rumus luas",
+      "Salah menuliskan satuan panjang"
+    ],
+
+    a: 2,
+
+    errorMap: {
+      0: "E3",
+      1: "E3",
+      3: "E5"
+    },
+
+    hint: "Pikirkan kembali rumus luas persegi panjang."
+  },
+
+
+  {
+    id: 11,
+    level: 3,
+    levelName: "ANALYSIS",
+
+    q: "Siti menghitung keliling taman 20 m × 12 m dengan 20 × 12 = 240 m. Apa yang perlu diperbaiki?",
+
+    opts: [
+      "Rumus keliling",
+      "Ukuran panjang",
+      "Ukuran lebar",
+      "Satuan luas"
+    ],
+
+    a: 0,
+
+    errorMap: {
+      1: "E5",
+      2: "E5",
+      3: "E5"
+    },
+
+    hint: "Apakah perkalian panjang × lebar digunakan untuk mencari keliling?"
+  },
+
+
+  {
+    id: 12,
+    level: 3,
+    levelName: "ANALYSIS",
+
+    q: "Taman A dan B sama-sama memiliki luas 240 m². Apakah keliling kedua taman pasti sama?",
+
+    opts: [
+      "Ya, karena luasnya sama",
+      "Ya, karena keduanya berbentuk persegi panjang",
+      "Tidak, karena panjang dan lebarnya dapat berbeda",
+      "Tidak, karena luas tidak dapat digunakan"
+    ],
+
+    a: 2,
+
+    errorMap: {
+      0: "E1",
+      1: "E1",
+      3: "E2"
+    },
+
+    hint: "Coba bayangkan dua persegi panjang dengan bentuk yang berbeda tetapi luas sama."
+  },
+
+
+  // =====================================
+  // LEVEL 4 — HOTS
+  // =====================================
+
+  {
+    id: 13,
+    level: 4,
+    levelName: "HOTS",
+
+    q: "Buatlah taman berbentuk persegi panjang dengan luas tepat 240 m². Manakah ukuran yang menghasilkan keliling paling kecil?",
+
+    opts: [
+      "10 m × 24 m",
+      "12 m × 20 m",
+      "15 m × 16 m",
+      "8 m × 30 m"
+    ],
+
+    a: 2,
+
+    errorMap: {
+      0: "E2",
+      1: "E2",
+      3: "E2"
+    },
+
+    hint: "Semua pilihan memiliki luas 240 m². Bandingkan kelilingnya."
+  },
+
+
+  {
+    id: 14,
+    level: 4,
+    levelName: "HOTS",
+
+    q: "Lahan sekolah maksimal berukuran 30 m × 20 m. Sekolah ingin membuat taman dengan luas minimal 240 m² dan pagar sesedikit mungkin. Ukuran yang paling efisien adalah...",
+
+    opts: [
+      "8 m × 30 m",
+      "10 m × 24 m",
+      "12 m × 20 m",
+      "15 m × 16 m"
+    ],
+
+    a: 3,
+
+    errorMap: {
+      0: "E2",
+      1: "E2",
+      2: "E2"
+    },
+
+    hint: "Cari ukuran yang memenuhi luas minimal 240 m², lalu bandingkan kelilingnya."
+  },
+
+
+  {
+    id: 15,
+    level: 4,
+    levelName: "BOSS CHALLENGE",
+
+    q: "Taman A berukuran 20 m × 12 m dan Taman B berukuran 15 m × 16 m. Harga pagar Rp25.000 per meter. Pernyataan yang benar adalah...",
+
+    opts: [
+      "Taman A lebih luas dan biaya pagarnya lebih mahal",
+      "Taman B lebih luas dan biaya pagarnya lebih murah",
+      "Keduanya sama luas, tetapi Taman B membutuhkan biaya pagar lebih sedikit",
+      "Keduanya sama luas dan biaya pagarnya sama"
+    ],
+
+    a: 2,
+
+    errorMap: {
+      0: "E1",
+      1: "E2",
+      3: "E4"
+    },
+
+    hint: "Hitung luas, keliling, lalu biaya pagar untuk kedua taman."
+  }
+
+];
 const coachScripts = {
   E1: [
     "Mari kita periksa konsepnya. Kamu sedang mencari luas atau keliling?",
@@ -162,32 +538,219 @@ function startShapeLab(){
 }
 
 function renderShapeQuestion(){
-  const q=shapeQuestions[state.shapeIndex];state.currentQuestion=q;
-  document.getElementById("shapeCounter").textContent=`Soal ${state.shapeIndex+1}/${shapeQuestions.length}`;
-  let html=`<h2 style="font-size:27px">${q.q}</h2>`;
-  if(q.diagram) html+=`<div class="shape-box"><div class="rect-diagram"><span style="font-weight:900;color:#1d4ed8">🌳 TAMAN 🌳</span></div></div>`;
-  document.getElementById("shapeQuestion").innerHTML=html;
-  const box=document.getElementById("shapeOptions");box.innerHTML="";
-  document.getElementById("feedbackArea").innerHTML="";
+
+  const q = shapeQuestions[state.shapeIndex];
+
+  state.currentQuestion = q;
+
+  document.getElementById("shapeCounter").textContent =
+    `Soal ${state.shapeIndex + 1}/${shapeQuestions.length}`;
+
+
+  let modeText = "";
+
+  if(state.currentWrongAnswer){
+
+    modeText = `
+      <div class="retry-banner">
+        🔄 <strong>TRY AGAIN</strong>
+        <br>
+        Periksa kembali cara berpikirmu.
+      </div>
+    `;
+
+  } else {
+
+    modeText = `
+      <div class="think-banner">
+        🧠 <strong>THINK BEFORE CHECK</strong>
+        <br>
+        Pikirkan strategimu sebelum memilih jawaban.
+      </div>
+    `;
+
+  }
+
+
+  let html = `
+
+    ${modeText}
+
+    <div class="level-label">
+      LEVEL ${q.level} · ${q.levelName}
+    </div>
+
+    <h2 style="font-size:27px">
+      ${q.q}
+    </h2>
+
+  `;
+
+
+  if(q.diagram){
+
+    html += `
+
+      <div class="shape-box">
+
+        <div class="rect-diagram">
+
+          <span>
+            🌳 TAMAN 🌳
+          </span>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  document.getElementById("shapeQuestion")
+    .innerHTML = html;
+
+
+  const box =
+    document.getElementById("shapeOptions");
+
+  box.innerHTML = "";
+
+
+  document.getElementById("feedbackArea")
+    .innerHTML = "";
+
+
   q.opts.forEach((opt,i)=>{
-    const b=document.createElement("button");b.className="option-btn";b.textContent=String.fromCharCode(65+i)+". "+opt;
-    b.onclick=()=>answerShape(i);box.appendChild(b);
+
+    const b =
+      document.createElement("button");
+
+    b.className = "option-btn";
+
+    b.textContent =
+      String.fromCharCode(65+i) + ". " + opt;
+
+    b.onclick =
+      () => answerShape(i);
+
+    box.appendChild(b);
+
   });
+
 }
 
 function answerShape(i){
-  const q=state.currentQuestion;
+
+  const q = state.currentQuestion;
+
   state.attempts++;
-  if(i===q.a){
+
+  // =========================
+  // JAWABAN BENAR
+  // =========================
+
+  if(i === q.a){
+
     state.shapeScore++;
-    document.getElementById("feedbackArea").innerHTML=`<div class="feedback good">🎉 Benar! Sekarang jelaskan bagaimana kamu mendapatkan jawabanmu.</div>`;
-    setTimeout(()=>nextShape(),650);
-  }else{
-    state.currentWrongAnswer=q.opts[i];
-    state.errors.push(q.errorMap[i] || "E5");
-    document.getElementById("feedbackArea").innerHTML=`<div class="feedback bad">Belum tepat. Jangan khawatir—kali ini kita selidiki cara berpikirmu.</div>`;
-    setTimeout(()=>{document.getElementById("wrongAnswerBox").innerHTML=`Jawabanmu: ${q.opts[i]}<br><small>Soal: ${q.q}</small>`;showScreen("errorScreen");},650);
+
+    // Jika ini percobaan pertama
+    if(!state.currentWrongAnswer){
+
+      document.getElementById("feedbackArea").innerHTML = `
+        <div class="feedback good">
+          🎉 <strong>Benar!</strong>
+          <br>
+          Kamu berhasil pada percobaan pertama.
+        </div>
+      `;
+
+      setTimeout(() => nextShape(), 900);
+
+    }
+
+    // Jika ini jawaban revisi
+    else{
+
+      document.getElementById("feedbackArea").innerHTML = `
+        <div class="feedback good">
+          🎯 <strong>Kamu berhasil memperbaiki jawabanmu!</strong>
+          <br>
+          Kesalahan adalah bagian dari proses belajar.
+        </div>
+      `;
+
+      setTimeout(() => {
+
+        state.currentWrongAnswer = null;
+
+        nextShape();
+
+      }, 1200);
+
+    }
+
+    return;
   }
+
+
+  // =========================
+  // JAWABAN SALAH
+  // =========================
+
+  state.currentWrongAnswer = q.opts[i];
+
+  const errorType = q.errorMap[i] || "E5";
+
+  state.selectedError = errorType;
+
+  state.errors.push({
+    questionId: q.id,
+    question: q.q,
+    wrongAnswer: q.opts[i],
+    errorType: errorType,
+    attempt: state.attempts
+});
+
+
+  document.getElementById("feedbackArea").innerHTML = `
+    <div class="feedback bad">
+      🤔 <strong>Belum tepat.</strong>
+      <br>
+      Jangan takut salah. Mari kita cari tahu cara berpikirmu.
+    </div>
+  `;
+
+
+  setTimeout(() => {
+
+    document.getElementById("wrongAnswerBox").innerHTML = `
+
+      <div class="wrong-summary">
+
+        <div>
+          🧩 <strong>Misi ${q.id}</strong>
+        </div>
+
+        <p>${q.q}</p>
+
+        <div class="wrong-answer">
+          ❌ Jawabanmu:
+          <strong>${q.opts[i]}</strong>
+        </div>
+
+        <div class="coach-hint">
+          💡 ${q.hint}
+        </div>
+
+      </div>
+
+    `;
+
+    showScreen("errorScreen");
+
+  }, 700);
 }
 
 function chooseError(type){
@@ -208,8 +771,15 @@ function showCoach(type){
 }
 
 function retryShape(){
+
   toast("Coba lagi dengan strategi yang baru! 💡");
+
+  // Jangan menghapus currentWrongAnswer.
+  // Data ini diperlukan untuk mengetahui
+  // bahwa siswa sedang melakukan revisi.
+
   renderShapeQuestion();
+
   showScreen("shapeScreen");
 }
 
