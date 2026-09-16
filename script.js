@@ -1,18 +1,31 @@
 const state = {
+
   studentName: "",
   studentClass: "VI A",
   avatar: "👦",
+
   currentScreen: "homeScreen",
+
   pretestIndex: 0,
   pretestScore: 0,
+
   shapeIndex: 0,
   shapeScore: 0,
+
   attempts: 0,
+
+  firstTryCorrect: 0,
+  correctedCount: 0,
+
   errors: [],
+
   currentQuestion: null,
   currentWrongAnswer: null,
+
   selectedError: null,
+
   reflection: {}
+
 };
 
 const pretestQuestions = [
@@ -706,144 +719,106 @@ function renderShapeQuestion(){
 
 }
 
-function answerShape(i){
+function answerShape(i) {
 
   const q = state.currentQuestion;
 
   state.attempts++;
 
+  const selectedAnswer = q.opts[i];
+
   // =========================
   // JAWABAN BENAR
   // =========================
 
-  if(i === q.a){
+  if (i === q.a) {
 
     state.shapeScore++;
 
-    // Jika ini percobaan pertama
-    if(!state.currentWrongAnswer){
+    // Jika sebelumnya pernah salah,
+    // berarti siswa berhasil memperbaiki kesalahan.
+    if (state.currentWrongAnswer !== null) {
 
-      document.getElementById("feedbackArea").innerHTML = `
-        <div class="feedback good">
-          🎉 <strong>Benar!</strong>
-          <br>
-          Kamu berhasil pada percobaan pertama.
-        </div>
-      `;
+      state.correctedCount =
+        (state.correctedCount || 0) + 1;
 
-      setTimeout(() => nextShape(), 900);
+      toast("🎉 Hebat! Kamu berhasil memperbaiki jawabanmu.");
 
-    }
+    } else {
 
-    // Jika ini jawaban revisi
-    else{
+      state.firstTryCorrect =
+        (state.firstTryCorrect || 0) + 1;
 
-      document.getElementById("feedbackArea").innerHTML = `
-        <div class="feedback good">
-          🎯 <strong>Kamu berhasil memperbaiki jawabanmu!</strong>
-          <br>
-          Kesalahan adalah bagian dari proses belajar.
-        </div>
-      `;
-
-      setTimeout(() => {
-
-        state.currentWrongAnswer = null;
-
-        nextShape();
-
-      }, 1200);
+      toast("⭐ Mantap! Jawabanmu tepat.");
 
     }
+
+    state.currentWrongAnswer = null;
+    state.selectedError = null;
+
+    setTimeout(() => {
+      nextShape();
+    }, 900);
 
     return;
   }
-
 
   // =========================
   // JAWABAN SALAH
   // =========================
 
-  state.currentWrongAnswer = q.opts[i];
+  state.currentWrongAnswer = selectedAnswer;
 
-  const errorType = q.errorMap[i] || "E5";
+  // Tentukan dugaan jenis kesalahan
+  const predictedError =
+    q.errorMap && q.errorMap[i]
+      ? q.errorMap[i]
+      : "E1";
 
-  state.selectedError = errorType;
+  const errorRecord = {
 
-  state.errors.push({
     questionId: q.id,
+
     question: q.q,
-    wrongAnswer: q.opts[i],
-    errorType: errorType,
+
+    wrongAnswer: selectedAnswer,
+
+    predictedError: predictedError,
+
+    selectedByStudent: null,
+
     attempt: state.attempts
-});
 
+  };
 
-  document.getElementById("feedbackArea").innerHTML = `
-    <div class="feedback bad">
-      🤔 <strong>Belum tepat.</strong>
-      <br>
-      Jangan takut salah. Mari kita cari tahu cara berpikirmu.
-    </div>
-  `;
+  state.errors.push(errorRecord);
 
+  // Tampilkan soal
+  const wrongQuestion =
+    document.getElementById("wrongQuestion");
 
-  setTimeout(() => {
+  if (wrongQuestion) {
+    wrongQuestion.innerHTML = q.q;
+  }
 
-  document.getElementById("wrongAnswerBox").innerHTML = `
+  // Tampilkan jawaban siswa
+  const wrongAnswerBox =
+    document.getElementById("wrongAnswerBox");
 
-    <div class="wrong-summary">
+  if (wrongAnswerBox) {
 
-      <div class="error-title">
-        🔎 MARI SELIDIKI CARA BERPIKIRMU
-      </div>
-
-      <p>
-        ${q.q}
-      </p>
-
-      <div class="wrong-answer">
-
-        ❌ Jawabanmu:
-
-        <strong>
-          ${q.opts[i]}
-        </strong>
-
-      </div>
-
-      <p class="error-question">
-
-        Menurutmu, apa yang menyebabkan jawabanmu
-        belum tepat?
-
-      </p>
-
-    </div>
-
-  `;
-
-
-  showScreen("errorScreen");
-
-}, 700);
-
-function chooseError(type){
-
-  state.selectedError = type;
-
-  // Simpan jenis kesalahan pada percobaan saat ini
-  if(state.errors.length > 0){
-
-    const lastError =
-      state.errors[state.errors.length - 1];
-
-    lastError.selectedByStudent = type;
+    wrongAnswerBox.innerHTML = `
+      <strong>${selectedAnswer}</strong>
+    `;
 
   }
 
-  showCoach(type);
+  showScreen("errorScreen");
 
+  updateProgress("errorScreen");
+}
+
+  showCoach(type);
 }
 
 function showCoach(type){
