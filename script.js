@@ -539,12 +539,19 @@ const coachScripts = {
 
 };
 
-function showScreen(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  state.currentScreen=id;
-  updateProgress(id);
-  window.scrollTo({top:0,behavior:"smooth"});
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
+
+  const target = document.getElementById(id);
+
+  if (target) {
+    target.classList.add("active");
+    state.currentScreen = id;
+  } else {
+    console.error("Screen tidak ditemukan:", id);
+  }
 }
 
 function updateProgress(id){
