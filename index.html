@@ -1,240 +1,698 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Math Mission</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Math Mission - Belajar dari Kesalahan</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --primary-dark: #1e40af;
+            --accent-yellow: #f59e0b;
+            --accent-orange: #ea580c;
+            --status-green: #10b981;
+            --bg-light: #f8fafc;
+            --surface-white: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* App Container */
+        .app-container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--surface-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            position: relative;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            background: var(--primary-blue);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Screen Wrapper */
+        .screen {
+            display: none;
+            padding: 2rem;
+            flex: 1;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Button Styles */
+        .btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--border-color);
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .btn-warning {
+            background: var(--accent-orange);
+        }
+
+        .btn-warning:hover {
+            background: #c2410c;
+        }
+
+        /* Splash Screen */
+        .splash-content {
+            text-align: center;
+            margin: auto;
+            max-width: 500px;
+        }
+
+        .splash-icon {
+            font-size: 4rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .tagline {
+            display: inline-block;
+            background: #dbeafe;
+            color: var(--primary-blue);
+            font-weight: 800;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            margin: 1rem 0 2rem 0;
+            letter-spacing: 1px;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-blue);
+        }
+
+        .avatar-selection {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .avatar-option {
+            font-size: 2rem;
+            padding: 0.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+        }
+
+        .avatar-option.selected {
+            border-color: var(--primary-blue);
+            background: #eff6ff;
+        }
+
+        /* Question Box Layout */
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--bg-light);
+        }
+
+        .question-card {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-btn {
+            background: var(--surface-white);
+            border: 2px solid var(--border-color);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            text-align: left;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary-blue);
+            background: #eff6ff;
+        }
+
+        /* Mistake Lab & AI Coach Modal */
+        .modal-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            z-index: 100;
+        }
+
+        .modal-card {
+            background: var(--surface-white);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            animation: fadeIn 0.2s ease;
+        }
+
+        .coach-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary-blue);
+            padding: 1rem;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .coach-avatar {
+            font-size: 2.5rem;
+        }
+
+        /* Thinking Card & Dashboard */
+        .thinking-card {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .thinking-step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .status-pill {
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .status-pill.success { background: #d1fae5; color: #065f46; }
+        .status-pill.error { background: #fee2e2; color: #991b1b; }
+
+        @media (max-width: 640px) {
+            .options-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
-  <div id="app">
-    <header class="topbar">
-      <div class="brand-mini">
-        <span class="brand-icon">🤖</span>
-        <span>AI MATH MISSION</span>
-      </div>
-      <div class="progress-wrap">
-        <span id="progressText">Misi 0%</span>
-        <div class="progress"><div id="progressBar"></div></div>
-      </div>
-    </header>
 
-    <main>
-      <!-- HOME -->
-      <section class="screen active" id="homeScreen">
-        <div class="hero-card">
-          <div class="hero-copy">
-            <div class="eyebrow">🧠 MEDIA PEMBELAJARAN INTERAKTIF</div>
-            <h1>AI MATH<br><span>MISSION</span></h1>
-            <p class="tagline">Jangan Takut Salah</p>
-            <p class="subtagline">Belajar dari Kesalahan</p>
-            <div class="think-pill">THINK • TRY • CHECK • IMPROVE</div>
-            <button class="primary-btn" onclick="showScreen('profileScreen')">🚀 MULAI MISI</button>
-            <p class="tiny-note">“Setiap kesalahan adalah petunjuk untuk belajar.”</p>
-          </div>
-          <div class="hero-mascot">
-            <div class="orbit orbit-1"></div>
-            <div class="orbit orbit-2"></div>
-            <div class="robot">🤖</div>
-            <div class="speech">Hai, Math Explorer!<br><b>Siap belajar dari kesalahan?</b></div>
-          </div>
+<div class="app-container">
+    <!-- Top Navigation -->
+    <div class="nav-bar">
+        <div style="font-weight: 800; font-size: 1.1rem;"><i class="fa-solid fa-robot"></i> AI MATH MISSION</div>
+        <div class="user-badge" id="nav-user" style="display: none;">
+            <span id="nav-avatar">👩‍🚀</span>
+            <span id="nav-name">Alya</span>
         </div>
-        <div class="feature-row">
-          <div class="feature">🔍 <b>Temukan</b><small>kesalahanmu</small></div>
-          <div class="feature">🤖 <b>Diskusikan</b><small>dengan Mathi</small></div>
-          <div class="feature">💡 <b>Perbaiki</b><small>cara berpikirmu</small></div>
-        </div>
-      </section>
+    </div>
 
-      <!-- PROFILE -->
-      <section class="screen" id="profileScreen">
-        <div class="panel narrow">
-          <div class="mathi-small">🤖</div>
-          <div class="eyebrow">LANGKAH 1</div>
-          <h2>Halo, Math Explorer! 👋</h2>
-          <p class="muted">Kenalan dulu dengan Mathi sebelum memulai misi.</p>
-          <label>Nama kamu</label>
-          <input id="studentName" class="text-input" placeholder="Tulis namamu..." maxlength="30">
-          <label>Kelas</label>
-          <select id="studentClass" class="text-input">
-            <option>VI A</option><option>VI B</option><option>VI C</option>
-          </select>
-          <label>Pilih avatar</label>
-          <div class="avatar-grid" id="avatarGrid">
-            <button class="avatar selected" data-avatar="👦">👦</button>
-            <button class="avatar" data-avatar="👧">👧</button>
-            <button class="avatar" data-avatar="🧑‍🚀">🧑‍🚀</button>
-            <button class="avatar" data-avatar="🧑‍🔬">🧑‍🔬</button>
-            <button class="avatar" data-avatar="🤖">🤖</button>
-          </div>
-          <button class="primary-btn full" onclick="startProfile()">🚀 MULAI PETUALANGAN</button>
-          <button class="ghost-btn" onclick="showScreen('homeScreen')">← Kembali</button>
-        </div>
-      </section>
-
-      <!-- PRETEST INTRO -->
-      <section class="screen" id="pretestIntroScreen">
-        <div class="panel">
-          <div class="mission-icon">📝</div>
-          <div class="eyebrow">LANGKAH 2 • PEMETAAN AWAL</div>
-          <h2>Mari Lihat Cara Berpikirmu</h2>
-          <p class="lead">Tenang. Ini bukan tentang siapa yang paling cepat. Mathi ingin melihat bagaimana kamu berpikir.</p>
-          <div class="rules">
-            <div>🟢 5 soal singkat</div>
-            <div>🔵 Tidak ada petunjuk</div>
-            <div>🟡 Kerjakan sendiri</div>
-          </div>
-          <button class="primary-btn" onclick="startPretest()">📝 MULAI PRETEST</button>
-        </div>
-      </section>
-
-      <!-- PRETEST -->
-      <section class="screen" id="pretestScreen">
-        <div class="panel question-panel">
-          <div class="question-top">
-            <span class="badge">PRETEST</span>
-            <span id="pretestCounter">Soal 1/5</span>
-          </div>
-          <div id="pretestQuestion"></div>
-          <div id="pretestOptions" class="options"></div>
-        </div>
-      </section>
-
-      <!-- DIAGNOSTIC -->
-      <section class="screen" id="diagnosticScreen">
-        <div class="panel">
-          <div class="mission-icon">🔎</div>
-          <div class="eyebrow">HASIL PEMETAAN AWAL</div>
-          <h2 id="diagnosticTitle">Hasilmu sudah siap!</h2>
-          <div id="diagnosticBars" class="metric-list"></div>
-          <div class="coach-box">
-            <div class="coach-avatar">🤖</div>
-            <div><b>Mathi berkata:</b><br>
-              “Aku sudah menemukan beberapa bagian yang bisa kita latih bersama. Yuk masuk ke misi!”
+    <!-- SCREEN 01: SPLASH -->
+    <div class="screen active" id="screen-splash">
+        <div class="splash-content">
+            <div class="splash-icon"><i class="fa-solid fa-brain"></i> 🤖</div>
+            <h1>AI MATH MISSION</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem;">Jangan Takut Salah, Belajar dari Kesalahan!</p>
+            <div class="tagline">THINK • TRY • CHECK • IMPROVE</div>
+            <div>
+                <button class="btn" onclick="nextScreen('screen-profile')">🚀 MULAI MISI</button>
             </div>
-          </div>
-          <button class="primary-btn" onclick="showScreen('mapScreen')">🗺️ LIHAT MISSION MAP</button>
         </div>
-      </section>
+    </div>
 
-      <!-- MAP -->
-      <section class="screen" id="mapScreen">
-        <div class="panel wide">
-          <div class="eyebrow">MISSION MAP</div>
-          <h2>Perjalanan Math Explorer 🗺️</h2>
-          <p class="muted">Selesaikan setiap tahap untuk membuka kemampuan baru.</p>
-          <div class="map">
-            <div class="map-node done"><span>🚩</span><b>START</b><small>Profil & Pretest</small></div>
-            <div class="map-line"></div>
-            <button class="map-node active-node" onclick="showScreen('shapeIntroScreen')"><span>🏗️</span><b>SHAPE LAB</b><small>Aktif sekarang</small></button>
-            <div class="map-line"></div>
-            <div class="map-node locked"><span>🔍</span><b>MISTAKE LAB</b><small>Segera terbuka</small></div>
-            <div class="map-line"></div>
-            <div class="map-node locked"><span>🤖</span><b>AI COACH</b><small>Segera terbuka</small></div>
-            <div class="map-line"></div>
-            <div class="map-node locked"><span>🏆</span><b>BOSS CHALLENGE</b><small>Segera terbuka</small></div>
-          </div>
-          <button class="ghost-btn" onclick="showScreen('profileScreen')">← Profil</button>
+    <!-- SCREEN 02: STUDENT PROFILE -->
+    <div class="screen" id="screen-profile">
+        <h2 style="margin-bottom: 1.5rem;">Profil Penjelajah</h2>
+        <div class="form-group">
+            <label>Nama Lengkap</label>
+            <input type="text" id="input-name" class="form-control" placeholder="Masukkan namamu..." value="Alya">
         </div>
-      </section>
-
-      <!-- SHAPE INTRO -->
-      <section class="screen" id="shapeIntroScreen">
-        <div class="panel mission-panel">
-          <div class="mission-icon big">🏗️</div>
-          <div class="eyebrow">MISSION 01 • SHAPE LAB</div>
-          <h2>Merancang Taman Sekolah</h2>
-          <p class="lead">Sekolah ingin memperindah halaman dengan taman baru. Kamu dipercaya membantu menghitung ukuran taman dan kebutuhan pagarnya.</p>
-          <div class="mission-card">
-            <div class="mathi-small">🤖</div>
-            <p><b>Mathi:</b> “Seorang Math Explorer bukan hanya mencari jawaban. Ia juga mencari alasan di balik jawabannya.”</p>
-          </div>
-          <button class="primary-btn" onclick="startShapeLab()">🚀 MULAI SHAPE LAB</button>
+        <div class="form-group">
+            <label>Kelas</label>
+            <input type="text" id="input-class" class="form-control" placeholder="Contoh: VI A" value="VI A">
         </div>
-      </section>
-
-      <!-- SHAPE LAB -->
-      <section class="screen" id="shapeScreen">
-        <div class="panel question-panel">
-          <div class="question-top">
-            <span class="badge orange">SHAPE LAB</span>
-            <span id="shapeCounter">Soal 1/5</span>
-          </div>
-          <div id="shapeQuestion"></div>
-          <div id="shapeOptions" class="options"></div>
-          <div id="feedbackArea"></div>
+        <div class="form-group">
+            <label>Pilih Avatar</label>
+            <div class="avatar-selection">
+                <div class="avatar-option selected" onclick="selectAvatar(this, '👩‍🚀')">👩‍🚀</div>
+                <div class="avatar-option" onclick="selectAvatar(this, '👨‍🚀')">👨‍🚀</div>
+                <div class="avatar-option" onclick="selectAvatar(this, '🤖')">🤖</div>
+                <div class="avatar-option" onclick="selectAvatar(this, '🐱‍🚀')">🐱‍🚀</div>
+            </div>
         </div>
-      </section>
-
-      <!-- ERROR -->
-      <section class="screen" id="errorScreen">
-        <div class="panel">
-          <div class="mission-icon">🔍</div>
-          <div class="eyebrow">MISTAKE LAB</div>
-          <h2>Ada sesuatu yang perlu kita selidiki.</h2>
-          <p class="lead">Tidak apa-apa. Kesalahan bisa memberi kita petunjuk.</p>
-          <div class="wrong-answer" id="wrongAnswerBox"></div>
-          <p><b>Menurutmu, apa yang mungkin terjadi?</b></p>
-          <div class="error-options">
-            <button onclick="chooseError('E1')">🧠 Saya belum memahami konsep.</button>
-            <button onclick="chooseError('E2')">🧭 Saya memilih cara yang kurang tepat.</button>
-            <button onclick="chooseError('E3')">📝 Saya salah melakukan langkah.</button>
-            <button onclick="chooseError('E4')">🔢 Saya salah menghitung.</button>
-            <button onclick="chooseError('E5')">❓ Saya belum tahu.</button>
-          </div>
+        <div style="margin-top: auto; text-align: right;">
+            <button class="btn" onclick="saveProfile()">Lanjut ke Diagnostic Map ➔</button>
         </div>
-      </section>
+    </div>
 
-      <!-- COACH -->
-      <section class="screen" id="coachScreen">
-        <div class="panel coach-panel">
-          <div class="coach-header">
-            <div class="coach-avatar large">🤖</div>
-            <div><b>Mathi — Math Coach</b><small>Teman berpikirmu</small></div>
-          </div>
-          <div id="coachContent" class="chat-area"></div>
-          <button class="primary-btn full" onclick="retryShape()">🔄 COBA LAGI</button>
+    <!-- SCREEN 03 & 04: SHAPE LAB (QUESTION ENGINE) -->
+    <div class="screen" id="screen-mission">
+        <div class="question-header">
+            <div>
+                <span style="color: var(--text-muted); font-weight: 700; font-size: 0.9rem;" id="mission-level">LEVEL 1 — UNDERSTANDING</span>
+                <h3 id="mission-title">Misi 1 dari 2</h3>
+            </div>
+            <div style="background: #e0e7ff; color: var(--primary-blue); font-weight: 800; padding: 0.5rem 1rem; border-radius: 20px;" id="mission-badge">
+                🎯 Shape Lab
+            </div>
         </div>
-      </section>
 
-      <!-- REFLECTION -->
-      <section class="screen" id="reflectionScreen">
-        <div class="panel">
-          <div class="mission-icon">💭</div>
-          <div class="eyebrow">REFLEKSI</div>
-          <h2>My Learning Reflection</h2>
-          <p class="muted">Tuliskan perjalanan berpikirmu. Tidak harus panjang.</p>
-          <label>Awalnya saya berpikir...</label>
-          <textarea id="reflect1" class="text-input area" placeholder="Tulis di sini..."></textarea>
-          <label>Setelah mendapat petunjuk, saya menyadari...</label>
-          <textarea id="reflect2" class="text-input area" placeholder="Tulis di sini..."></textarea>
-          <label>Jika menemukan soal seperti ini lagi, saya akan...</label>
-          <textarea id="reflect3" class="text-input area" placeholder="Tulis di sini..."></textarea>
-          <button class="primary-btn full" onclick="finishMission()">🏆 LANJUT KE HASIL MISI</button>
+        <div class="question-card" id="question-text">
+            Taman sekolah berbentuk persegi panjang memiliki panjang 20 m dan lebar 12 m. Berapa luas taman tersebut?
         </div>
-      </section>
 
-      <!-- RESULT -->
-      <section class="screen" id="resultScreen">
-        <div class="panel result-panel">
-          <div class="celebrate">🎉</div>
-          <div class="eyebrow">MISSION COMPLETE</div>
-          <h2 id="resultTitle">Hebat, Math Explorer!</h2>
-          <p class="lead">Kamu tidak hanya mencari jawaban. Kamu belajar memperbaiki cara berpikirmu.</p>
-          <div id="resultStats" class="result-stats"></div>
-          <div class="badge-card">
-            <div>🔍</div><div><b>ERROR DETECTIVE</b><small>Kamu berani memeriksa dan memperbaiki kesalahan.</small></div>
-          </div>
-          <button class="primary-btn" onclick="showScreen('mapScreen')">🗺️ KEMBALI KE MISSION MAP</button>
+        <div class="options-grid" id="options-container">
+            <!-- Options injected via JS -->
         </div>
-      </section>
-    </main>
-  </div>
 
-  <div id="toast" class="toast"></div>
-  <script src="script.js"></script>
+        <!-- Section "Show My Thinking" Log untuk Soal Ini -->
+        <div class="thinking-card" id="thinking-card" style="display: none;">
+            <h4 style="margin-bottom: 0.5rem; color: var(--primary-blue);"><i class="fa-solid fa-code-branch"></i> SHOW MY THINKING</h4>
+            <div id="thinking-log"></div>
+        </div>
+    </div>
+
+    <!-- SCREEN: REFLECTION -->
+    <div class="screen" id="screen-reflection">
+        <h2>🪞 Refleksi Metakognisi</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Hebat! Kamu berhasil memperbaiki jawabanmu. Apa yang paling membantumu memahami soal ini?</p>
+        
+        <div class="options-grid" style="grid-template-columns: 1fr;">
+            <button class="option-btn" onclick="submitReflection('Saya lebih memahami rumus dan konsep dasar.')">🧠 Saya lebih memahami rumus dan konsepnya.</button>
+            <button class="option-btn" onclick="submitReflection('Saya menemukan strategi/cara hitung yang lebih tepat.')">🧭 Saya menemukan strategi baru.</button>
+            <button class="option-btn" onclick="submitReflection('Saya membaca ulang soal dengan lebih teliti.')">🔍 Saya lebih teliti membaca soal & satuan.</button>
+            <button class="option-btn" onclick="submitReflection('Petunjuk dari Mathi Coach sangat membantu saya.')">💡 Petunjuk dari Mathi Coach membantu saya.</button>
+        </div>
+    </div>
+
+    <!-- SCREEN: TEACHER DASHBOARD -->
+    <div class="screen" id="screen-dashboard">
+        <h2>📊 Teacher Dashboard — Analytics</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Rekam Jejak & Diagnostik Proses Berpikir Siswa</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="background: #eff6ff; padding: 1rem; border-radius: var(--radius-md);">
+                <h4>Ringkasan Siswa</h4>
+                <p>Nama: <strong id="dash-name">Alya</strong></p>
+                <p>Kelas: <strong id="dash-class">VI A</strong></p>
+                <p>Misi Selesai: <strong>2 / 2</strong></p>
+            </div>
+            <div style="background: #fef3c7; padding: 1rem; border-radius: var(--radius-md);">
+                <h4>Peta Kesalahan (Error Map)</h4>
+                <div id="error-summary" style="font-size: 0.9rem; margin-top: 0.5rem;">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </div>
+
+        <h3>Detail "Show My Thinking"</h3>
+        <div id="dashboard-thinking-details" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; max-height: 250px; overflow-y: auto;">
+            <!-- Logs injected via JS -->
+        </div>
+
+        <div style="margin-top: 1.5rem; text-align: right;">
+            <button class="btn btn-secondary" onclick="resetApp()"><i class="fa-solid fa-rotate-right"></i> Ulangi Simulasi</button>
+        </div>
+    </div>
+
+    <!-- MODAL: MISTAKE LAB & MATHI COACH -->
+    <div class="modal-overlay" id="modal-mistake">
+        <div class="modal-card">
+            <h3 style="color: var(--accent-orange);"><i class="fa-solid fa-puzzle-piece"></i> MISTAKE LAB</h3>
+            <p style="margin-top: 0.5rem;">"Kesalahan adalah petunjuk untuk belajar!"</p>
+            
+            <div style="margin: 1rem 0;">
+                <label style="font-weight: 700; display: block; margin-bottom: 0.5rem;">Menurutmu, apa yang menyebabkan jawaban awalmu belum tepat?</label>
+                <select id="error-type-select" class="form-control">
+                    <option value="E1 Concept Error">🧠 E1 — Concept Error (Belum paham konsep/rumus)</option>
+                    <option value="E2 Strategy Error">🧭 E2 — Strategy Error (Salah memilih cara/langkah)</option>
+                    <option value="E3 Procedure Error">🔧 E3 — Procedure Error (Langkah pengerjaan keliru)</option>
+                    <option value="E4 Calculation Error">➗ E4 — Calculation Error (Tergelincir saat menghitung)</option>
+                    <option value="E5 Interpretation Error">🔍 E5 — Interpretation Error (Kurang teliti membaca soal)</option>
+                </select>
+            </div>
+
+            <!-- Mathi AI Coach Box -->
+            <div class="coach-box">
+                <div class="coach-avatar">🤖</div>
+                <div>
+                    <h4 style="color: var(--primary-blue);">Mathi — AI Math Coach</h4>
+                    <p id="coach-hint-text" style="font-size: 0.95rem; margin-top: 0.25rem;">
+                        <!-- Hint text -->
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; text-align: right;">
+                <button class="btn btn-warning" onclick="applyCoachHelp()">🔁 COBA LAGI (TRY AGAIN)</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // State Management
+    let state = {
+        student: { name: 'Alya', class: 'VI A', avatar: '👩‍🚀' },
+        currentQuestionIndex: 0,
+        logs: []
+    };
+
+    // Bank Soal Demonstrasi (2 Soal Representatif)
+    const questions = [
+        {
+            id: 1,
+            level: 'LEVEL 1 — UNDERSTANDING',
+            text: 'Taman sekolah berbentuk persegi panjang memiliki panjang 20 m dan lebar 12 m. Berapa luas taman tersebut?',
+            options: [
+                { label: 'A. 32 m²', correct: false },
+                { label: 'B. 64 m²', correct: false },
+                { label: 'C. 240 m²', correct: true },
+                { label: 'D. 480 m²', correct: false }
+            ],
+            hintPrompt: "Mari kita cek kembali: Luas persegi panjang dihitung dengan mengalikan Panjang dengan Lebar (L = p × l). Jangan tertukar dengan keliling ya!",
+            correctAnswer: 'C. 240 m²'
+        },
+        {
+            id: 2,
+            level: 'LEVEL 2 — APPLICATION',
+            text: 'Taman berukuran 20 m × 12 m tersebut akan dipagari penuh di sekelilingnya. Berapa panjang pagar yang dibutuhkan?',
+            options: [
+                { label: 'A. 32 m', correct: false },
+                { label: 'B. 64 m', correct: true },
+                { label: 'C. 240 m', correct: false },
+                { label: 'D. 120 m', correct: false }
+            ],
+            hintPrompt: "Mengelilingi taman artinya kita menghitung KELILING. Rumus keliling persegi panjang adalah 2 × (Panjang + Lebar). Coba jumlahkan dulu lalu kalikan 2!",
+            correctAnswer: 'B. 64 m'
+        }
+    ];
+
+    let currentLog = null;
+
+    // Navigation Helper
+    function nextScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+    }
+
+    // Profile Screen Logic
+    function selectAvatar(el, avatar) {
+        document.querySelectorAll('.avatar-option').forEach(a => a.classList.remove('selected'));
+        el.classList.add('selected');
+        state.student.avatar = avatar;
+    }
+
+    function saveProfile() {
+        state.student.name = document.getElementById('input-name').value || 'Alya';
+        state.student.class = document.getElementById('input-class').value || 'VI A';
+        
+        document.getElementById('nav-name').innerText = state.student.name;
+        document.getElementById('nav-avatar').innerText = state.student.avatar;
+        document.getElementById('nav-user').style.display = 'flex';
+
+        loadQuestion(0);
+        nextScreen('screen-mission');
+    }
+
+    // Question Engine
+    function loadQuestion(index) {
+        state.currentQuestionIndex = index;
+        const q = questions[index];
+
+        document.getElementById('mission-level').innerText = q.level;
+        document.getElementById('mission-title').innerText = `Misi ${index + 1} dari ${questions.length}`;
+        document.getElementById('question-text').innerText = q.text;
+        
+        // Reset Thinking Card Area
+        document.getElementById('thinking-card').style.display = 'none';
+        document.getElementById('thinking-log').innerHTML = '';
+
+        // Init log for current question
+        currentLog = {
+            questionId: q.id,
+            firstAnswer: null,
+            firstCorrect: false,
+            errorType: null,
+            coachHint: null,
+            revisedAnswer: null,
+            finalCorrect: false,
+            reflection: null
+        };
+
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+
+        q.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt.label;
+            btn.onclick = () => handleAnswer(opt, q);
+            container.appendChild(btn);
+        });
+    }
+
+    function handleAnswer(selectedOption, question) {
+        if (!currentLog.firstAnswer) {
+            // Jawaban Pertama
+            currentLog.firstAnswer = selectedOption.label;
+            currentLog.firstCorrect = selectedOption.correct;
+
+            if (selectedOption.correct) {
+                currentLog.finalCorrect = true;
+                saveLogAndNext();
+            } else {
+                // Tampilkan Mistake Lab Modal
+                document.getElementById('coach-hint-text').innerText = question.hintPrompt;
+                document.getElementById('modal-mistake').style.display = 'flex';
+            }
+        } else {
+            // Jawaban Revisi (Seteah bimbingan AI Coach)
+            currentLog.revisedAnswer = selectedOption.label;
+            currentLog.finalCorrect = selectedOption.correct;
+
+            if (selectedOption.correct) {
+                nextScreen('screen-reflection');
+            } else {
+                alert('Jawaban masih belum tepat. Mari periksa petunjuk Mathi Coach sekali lagi!');
+                document.getElementById('modal-mistake').style.display = 'flex';
+            }
+        }
+    }
+
+    function applyCoachHelp() {
+        const errorType = document.getElementById('error-type-select').value;
+        currentLog.errorType = errorType;
+        currentLog.coachHint = questions[state.currentQuestionIndex].hintPrompt;
+
+        document.getElementById('modal-mistake').style.display = 'none';
+
+        // Render "Show My Thinking" Log di bawah Soal
+        const logBox = document.getElementById('thinking-log');
+        logBox.innerHTML = `
+            <div class="thinking-step">
+                <span class="status-pill error">Jawaban Awal</span> 
+                <strong>${currentLog.firstAnswer}</strong> (Belum Tepat)
+            </div>
+            <div class="thinking-step">
+                <span class="status-pill error">Identifikasi Error</span> 
+                ${currentLog.errorType}
+            </div>
+            <div class="thinking-step">
+                <span class="status-pill success">Bantuan AI Coach</span> 
+                "${currentLog.coachHint}"
+            </div>
+        `;
+        document.getElementById('thinking-card').style.display = 'block';
+    }
+
+    function submitReflection(reflectionText) {
+        currentLog.reflection = reflectionText;
+        saveLogAndNext();
+    }
+
+    function saveLogAndNext() {
+        state.logs.push({...currentLog});
+
+        if (state.currentQuestionIndex + 1 < questions.length) {
+            loadQuestion(state.currentQuestionIndex + 1);
+            nextScreen('screen-mission');
+        } else {
+            renderDashboard();
+            nextScreen('screen-dashboard');
+        }
+    }
+
+    // Teacher Dashboard
+    function renderDashboard() {
+        document.getElementById('dash-name').innerText = state.student.name;
+        document.getElementById('dash-class').innerText = state.student.class;
+
+        // Error Summary Calculation
+        const errorCounts = {};
+        state.logs.forEach(l => {
+            if (l.errorType) {
+                errorCounts[l.errorType] = (errorCounts[l.errorType] || 0) + 1;
+            }
+        });
+
+        const errorSummaryDiv = document.getElementById('error-summary');
+        if (Object.keys(errorCounts).length === 0) {
+            errorSummaryDiv.innerHTML = '<p style="color: var(--status-green);">Siswa tidak melakukan kesalahan konsep!</p>';
+        } else {
+            errorSummaryDiv.innerHTML = Object.entries(errorCounts)
+                .map(([type, count]) => `<div>• <strong>${type}</strong>: ${count} kali</div>`)
+                .join('');
+        }
+
+        // Render Show My Thinking Detailed Cards
+        const detailsContainer = document.getElementById('dashboard-thinking-details');
+        detailsContainer.innerHTML = '';
+
+        state.logs.forEach((log, idx) => {
+            const card = document.createElement('div');
+            card.className = 'thinking-card';
+            card.innerHTML = `
+                <h4 style="color: var(--primary-blue);">Misi ${idx + 1}</h4>
+                <div class="thinking-step"><strong>Jawaban Awal:</strong> ${log.firstAnswer} ${log.firstCorrect ? '<span class="status-pill success">Langsung Benar</span>' : '<span class="status-pill error">Salah</span>'}</div>
+                ${log.errorType ? `<div class="thinking-step"><strong>Jenis Kesalahan:</strong> ${log.errorType}</div>` : ''}
+                ${log.coachHint ? `<div class="thinking-step"><strong>Scaffolding AI:</strong> "${log.coachHint}"</div>` : ''}
+                ${log.revisedAnswer ? `<div class="thinking-step"><strong>Jawaban Revisi:</strong> ${log.revisedAnswer} <span class="status-pill success">Berhasil Diperbaiki</span></div>` : ''}
+                ${log.reflection ? `<div class="thinking-step"><strong>Refleksi Siswa:</strong> "${log.reflection}"</div>` : ''}
+            `;
+            detailsContainer.appendChild(card);
+        });
+    }
+
+    function resetApp() {
+        state.logs = [];
+        state.currentQuestionIndex = 0;
+        nextScreen('screen-splash');
+    }
+</script>
+
 </body>
 </html>
