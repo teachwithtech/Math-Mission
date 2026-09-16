@@ -540,18 +540,27 @@ const coachScripts = {
 };
 
 function showScreen(id) {
+
   document.querySelectorAll(".screen").forEach(screen => {
     screen.classList.remove("active");
   });
 
-  const target = document.getElementById(id);
+  const target =
+    document.getElementById(id);
 
-  if (target) {
-    target.classList.add("active");
-    state.currentScreen = id;
-  } else {
-    console.error("Screen tidak ditemukan:", id);
+  if (!target) {
+
+    console.error(
+      "Screen tidak ditemukan:",
+      id
+    );
+
+    return;
   }
+
+  target.classList.add("active");
+
+  state.currentScreen = id;
 }
 
 function updateProgress(id){
@@ -730,6 +739,11 @@ function answerShape(i) {
 
   const q = state.currentQuestion;
 
+  if (!q) {
+    console.error("currentQuestion tidak ditemukan");
+    return;
+  }
+
   state.attempts++;
 
   const selectedAnswer = q.opts[i];
@@ -742,8 +756,6 @@ function answerShape(i) {
 
     state.shapeScore++;
 
-    // Jika sebelumnya pernah salah,
-    // berarti siswa berhasil memperbaiki kesalahan.
     if (state.currentWrongAnswer !== null) {
 
       state.correctedCount =
@@ -757,7 +769,6 @@ function answerShape(i) {
         (state.firstTryCorrect || 0) + 1;
 
       toast("⭐ Mantap! Jawabanmu tepat.");
-
     }
 
     state.currentWrongAnswer = null;
@@ -776,13 +787,12 @@ function answerShape(i) {
 
   state.currentWrongAnswer = selectedAnswer;
 
-  // Tentukan dugaan jenis kesalahan
   const predictedError =
     q.errorMap && q.errorMap[i]
       ? q.errorMap[i]
       : "E1";
 
-  const errorRecord = {
+  state.errors.push({
 
     questionId: q.id,
 
@@ -796,33 +806,35 @@ function answerShape(i) {
 
     attempt: state.attempts
 
-  };
+  });
 
-  state.errors.push(errorRecord);
+  // =========================
+  // ISI MISTAKE LAB
+  // =========================
 
-  // Tampilkan soal
   const wrongQuestion =
     document.getElementById("wrongQuestion");
 
-  if (wrongQuestion) {
-    wrongQuestion.innerHTML = q.q;
-  }
-
-  // Tampilkan jawaban siswa
   const wrongAnswerBox =
     document.getElementById("wrongAnswerBox");
 
-  if (wrongAnswerBox) {
-
-    wrongAnswerBox.innerHTML = `
-      <strong>${selectedAnswer}</strong>
-    `;
-
+  if (wrongQuestion) {
+    wrongQuestion.textContent = q.q;
   }
+
+  if (wrongAnswerBox) {
+    wrongAnswerBox.textContent =
+      selectedAnswer;
+  }
+
+  // =========================
+  // BUKA MISTAKE LAB
+  // =========================
 
   showScreen("errorScreen");
 
   updateProgress("errorScreen");
+
 }
 
 function showCoach(type){
