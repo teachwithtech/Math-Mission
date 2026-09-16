@@ -827,21 +827,16 @@ function answerShape(i) {
       selectedAnswer;
   }
 
-  // =========================
-  // BUKA MISTAKE LAB
-  // =========================
+  // ============================================
+// MISTAKE LAB
+// ============================================
 
-  showScreen("errorScreen");
-
-  updateProgress("errorScreen");
-
-}
 function chooseError(type) {
 
-  // Simpan jenis kesalahan yang dipilih siswa
+  // Simpan pilihan jenis kesalahan siswa
   state.selectedError = type;
 
-  // Simpan pilihan siswa pada catatan kesalahan terakhir
+  // Simpan pilihan tersebut ke error terakhir
   if (state.errors.length > 0) {
 
     const lastError =
@@ -850,114 +845,130 @@ function chooseError(type) {
     lastError.selectedByStudent = type;
   }
 
-  // Masuk ke Mathi Coach
+  // Buka Mathi Coach
   showCoach(type);
 }
 
-function showCoach(type){
 
-  const coach =
-    coachScripts[type] || coachScripts.E5;
+// ============================================
+// MATHI COACH
+// ============================================
 
-  const box =
+function showCoach(type) {
+
+  const coachContent =
     document.getElementById("coachContent");
 
+  const coachScripts = {
 
-  box.innerHTML = `
+    E1: {
+      title: "🧠 Periksa Konsepmu",
+      message:
+        "Coba ingat kembali konsep yang digunakan dalam soal ini.",
+      prompt:
+        "Apa yang sebenarnya sedang dicari oleh soal?"
+    },
 
-    <div class="mathi-header">
+    E2: {
+      title: "🧭 Periksa Strategimu",
+      message:
+        "Strategi yang kamu pilih mungkin belum sesuai dengan informasi soal.",
+      prompt:
+        "Operasi atau cara apa yang paling sesuai untuk menyelesaikan soal ini?"
+    },
 
-      <div class="mathi-avatar">
-        🤖
-      </div>
+    E3: {
+      title: "🔢 Periksa Langkahmu",
+      message:
+        "Coba periksa pekerjaanmu langkah demi langkah.",
+      prompt:
+        "Pada langkah mana kamu mulai mendapatkan hasil yang berbeda?"
+    },
 
-      <div>
+    E4: {
+      title: "🧮 Periksa Hitunganmu",
+      message:
+        "Konsepmu mungkin sudah benar. Sekarang periksa kembali perhitungannya.",
+      prompt:
+        "Apakah setiap angka dan operasi hitungmu sudah tepat?"
+    },
 
-        <strong>Mathi Coach</strong>
+    E5: {
+      title: "🔎 Baca Kembali Soal",
+      message:
+        "Mungkin ada informasi dalam soal yang terlewat.",
+      prompt:
+        "Apa yang diketahui dan apa yang sebenarnya ditanyakan?"
+    }
 
-        <small>
-          ${coach.name}
-        </small>
+  };
 
-      </div>
-
-    </div>
-
-
-    <div class="chat-bubble mathi">
-
-      🤖 <strong>Mathi:</strong>
-
-      ${coach.title}
-
-    </div>
-
-
-    <div class="error-badge">
-
-      ${coach.icon}
-
-      ${coach.name}
-
-    </div>
+  const coach =
+    coachScripts[type] || coachScripts.E1;
 
 
-    <div class="coach-steps">
+  // Tampilkan pesan Mathi
+  if (coachContent) {
 
-      ${coach.steps.map((step,index)=>`
+    coachContent.innerHTML = `
 
-        <div class="coach-step">
+      <div class="coach-message">
 
-          <span class="step-number">
-            ${index + 1}
-          </span>
+        <div class="coach-bubble">
+
+          <h3>${coach.title}</h3>
 
           <p>
-            ${step}
+            ${coach.message}
           </p>
+
+          <div class="coach-prompt">
+
+            💡 <strong>Coba pikirkan:</strong>
+
+            <br>
+
+            ${coach.prompt}
+
+          </div>
 
         </div>
 
-      `).join("")}
+      </div>
 
-    </div>
+    `;
 
-
-    <div class="chat-bubble mathi">
-
-      🤖 <strong>Mathi:</strong>
-
-      ${coach.finalPrompt}
-
-    </div>
+  }
 
 
-    <button
-      class="primary-btn"
-      onclick="retryShape()">
-
-      🔄 COBA LAGI
-
-    </button>
-
-  `;
-
-
+  // Pindah ke halaman Coach
   showScreen("coachScreen");
 
+  updateProgress("coachScreen");
 }
 
-function retryShape(){
 
-  toast("Coba lagi dengan strategi yang baru! 💡");
+// ============================================
+// COBA LAGI
+// ============================================
 
-  // Jangan menghapus currentWrongAnswer.
-  // Data ini diperlukan untuk mengetahui
-  // bahwa siswa sedang melakukan revisi.
+function retryShape() {
+
+  // Pastikan soal yang sama tetap digunakan
+  if (!state.currentQuestion) {
+
+    console.error(
+      "currentQuestion tidak ditemukan."
+    );
+
+    return;
+  }
 
   renderShapeQuestion();
 
   showScreen("shapeScreen");
+
+  updateProgress("shapeScreen");
 }
 
 function nextShape(){
