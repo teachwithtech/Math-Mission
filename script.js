@@ -825,9 +825,6 @@ function answerShape(i) {
   updateProgress("errorScreen");
 }
 
-  showCoach(type);
-}
-
 function showCoach(type){
 
   const coach =
