@@ -10,6 +10,7 @@ const state = {
   pretestScore: 0,
 
   shapeIndex: 0,
+  shapeLevel: 1,
   shapeScore: 0,
 
   attempts: 0,
@@ -628,20 +629,75 @@ function renderDiagnostic(){
 }
 
 function startShapeLab(){
-  state.shapeIndex=0;state.shapeScore=0;state.attempts=0;state.errors=[];renderShapeQuestion();showScreen("shapeScreen");
+
+  state.shapeIndex = 0;
+  state.shapeLevel = 1;
+
+  state.shapeScore = 0;
+  state.attempts = 0;
+  state.errors = [];
+
+  state.currentWrongAnswer = null;
+  state.selectedError = null;
+
+  renderShapeQuestion();
+
+  showScreen("shapeScreen");
+  updateProgress("shapeScreen");
 }
 
 function renderShapeQuestion(){
 
-  const q = shapeQuestions[state.shapeIndex];
+  // ==========================================
+  // AMBIL SOAL SESUAI LEVEL
+  // ==========================================
 
+  const levelQuestions =
+    shapeQuestions.filter(
+      q => q.level === state.shapeLevel
+    );
+
+
+  // Cari soal berdasarkan ID/index di level
+  const q =
+    levelQuestions.find(
+      item => item.id === state.shapeIndex
+    );
+
+
+  if(!q){
+
+    console.error(
+      "Soal tidak ditemukan:",
+      state.shapeIndex,
+      "Level:",
+      state.shapeLevel
+    );
+
+    return;
+  }
+
+
+  // Simpan soal aktif
   state.currentQuestion = q;
 
-  document.getElementById("shapeCounter").textContent =
-    `Soal ${state.shapeIndex + 1}/${shapeQuestions.length}`;
 
+  // ==========================================
+  // COUNTER LEVEL
+  // ==========================================
+
+  document.getElementById("shapeCounter").textContent =
+    `Level ${state.shapeLevel} · Soal ${
+      levelQuestions.indexOf(q) + 1
+    }/${levelQuestions.length}`;
+
+
+  // ==========================================
+  // MODE TRY AGAIN / THINK
+  // ==========================================
 
   let modeText = "";
+
 
   if(state.currentWrongAnswer){
 
@@ -653,7 +709,7 @@ function renderShapeQuestion(){
       </div>
     `;
 
-  } else {
+  }else{
 
     modeText = `
       <div class="think-banner">
@@ -665,6 +721,10 @@ function renderShapeQuestion(){
 
   }
 
+
+  // ==========================================
+  // TAMPILKAN SOAL
+  // ==========================================
 
   let html = `
 
@@ -680,6 +740,10 @@ function renderShapeQuestion(){
 
   `;
 
+
+  // ==========================================
+  // DIAGRAM
+  // ==========================================
 
   if(q.diagram){
 
@@ -706,6 +770,10 @@ function renderShapeQuestion(){
     .innerHTML = html;
 
 
+  // ==========================================
+  // PILIHAN JAWABAN
+  // ==========================================
+
   const box =
     document.getElementById("shapeOptions");
 
@@ -724,7 +792,9 @@ function renderShapeQuestion(){
     b.className = "option-btn";
 
     b.textContent =
-      String.fromCharCode(65+i) + ". " + opt;
+      String.fromCharCode(65+i) +
+      ". " +
+      opt;
 
     b.onclick =
       () => answerShape(i);
@@ -1021,32 +1091,80 @@ function retryShape() {
 }
 
 function nextShape(){
-  if(state.shapeIndex<shapeQuestions.length-1){
-    state.shapeIndex++;renderShapeQuestion();
-  }else{
-    showScreen("reflectionScreen");
+
+  // ==========================================
+  // SOAL DALAM LEVEL SAAT INI
+  // ==========================================
+
+  const levelQuestions =
+    shapeQuestions.filter(
+      q => q.level === state.shapeLevel
+    );
+
+
+  const currentPosition =
+    levelQuestions.findIndex(
+      q => q.id === state.shapeIndex
+    );
+
+
+  // ==========================================
+  // MASIH ADA SOAL DI LEVEL YANG SAMA
+  // ==========================================
+
+  if(
+    currentPosition <
+    levelQuestions.length - 1
+  ){
+
+    state.shapeIndex =
+      levelQuestions[currentPosition + 1].id;
+
+    state.currentWrongAnswer = null;
+    state.selectedError = null;
+
+    renderShapeQuestion();
+
+    return;
   }
-}
 
-function finishMission(){
-  state.reflection={
-    one:document.getElementById("reflect1").value.trim(),
-    two:document.getElementById("reflect2").value.trim(),
-    three:document.getElementById("reflect3").value.trim()
-  };
-  document.getElementById("resultTitle").textContent=`Hebat, ${state.studentName}! 🎉`;
-  document.getElementById("resultStats").innerHTML=`
-    <div class="stat"><b>${state.shapeScore}/${shapeQuestions.length}</b><small>Soal berhasil</small></div>
-    <div class="stat"><b>${state.attempts}</b><small>Total percobaan</small></div>
-    <div class="stat"><b>${state.errors.length}</b><small>Kesalahan yang diselidiki</small></div>
-  `;
-  showScreen("resultScreen");
-  localStorage.setItem("aiMathMissionLast",JSON.stringify(state));
-}
 
-function toast(msg){
-  const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"),1800);
-}
+  // ==========================================
+  // LEVEL SELESAI
+  // ==========================================
 
-updateProgress("homeScreen");
+  if(state.shapeLevel < 4){
+
+    state.shapeLevel++;
+
+    // Ambil soal pertama pada level berikutnya
+    const nextLevelQuestions =
+      shapeQuestions.filter(
+        q => q.level === state.shapeLevel
+      );
+
+    state.shapeIndex =
+      nextLevelQuestions[0].id;
+
+    state.currentWrongAnswer = null;
+    state.selectedError = null;
+
+    renderShapeQuestion();
+
+    toast(
+      `🎉 Level ${state.shapeLevel - 1} selesai! Sekarang masuk Level ${state.shapeLevel}.`
+    );
+
+    return;
+  }
+
+
+  // ==========================================
+  // SEMUA LEVEL SELESAI
+  // ==========================================
+
+  showScreen("reflectionScreen");
+
+  updateProgress("reflectionScreen");
+
+}
