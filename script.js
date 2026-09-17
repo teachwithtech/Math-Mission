@@ -881,6 +881,7 @@ function answerShape(i) {
 
   const selectedAnswer = q.opts[i];
 
+
   // ==========================================
   // JAWABAN BENAR
   // ==========================================
@@ -908,6 +909,7 @@ function answerShape(i) {
       toast(
         "⭐ Mantap! Jawabanmu tepat."
       );
+
     }
 
     state.currentWrongAnswer = null;
@@ -933,7 +935,6 @@ function answerShape(i) {
       : "E1";
 
 
-  // Simpan kesalahan
   state.errors.push({
 
     questionId: q.id,
@@ -952,7 +953,7 @@ function answerShape(i) {
 
 
   // ==========================================
-  // ISI MISTAKE LAB
+  // TAMPILKAN SOAL DI MISTAKE LAB
   // ==========================================
 
   const wrongQuestion =
@@ -963,27 +964,30 @@ function answerShape(i) {
 
 
   if (wrongQuestion) {
-    wrongQuestion.textContent = q.q;
+
+    wrongQuestion.textContent =
+      q.q;
+
   }
 
 
   if (wrongAnswerBox) {
+
     wrongAnswerBox.textContent =
       selectedAnswer;
+
   }
 
 
-  // Pindah ke Mistake Lab
+  // ==========================================
+  // MASUK MISTAKE LAB
+  // ==========================================
+
   showScreen("errorScreen");
 
   updateProgress("errorScreen");
 
 }
-
-
-// ============================================
-// PILIH JENIS KESALAHAN
-// ============================================
 
 function chooseError(type) {
 
