@@ -1137,8 +1137,6 @@ function showCoach(type) {
 function retryShape() {
 
   // Pastikan soal yang sama tetap digunakan
- function retryShape() {
-
   if (!state.currentQuestion) {
 
     console.error(
