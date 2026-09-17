@@ -235,3 +235,60 @@ label{display:block;font-size:13px;font-weight:900;margin:18px 0 7px}
     font-size: 18px;
   }
 }
+/* =========================
+   SHAPE LAB LEVEL HEADER
+========================= */
+
+.shape-level-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 18px 0 22px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: #fff8ed;
+  border: 2px solid #ffe0b2;
+}
+
+.shape-level-number {
+  min-width: 70px;
+  height: 70px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ff9f43;
+  color: white;
+  font-weight: 900;
+  font-size: 14px;
+  text-align: center;
+}
+
+.shape-level-header h2 {
+  margin: 0 0 4px;
+  font-size: 22px;
+}
+
+.shape-level-header p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+
+  .shape-level-header {
+    align-items: flex-start;
+  }
+
+  .shape-level-number {
+    min-width: 58px;
+    height: 58px;
+    font-size: 12px;
+  }
+
+  .shape-level-header h2 {
+    font-size: 18px;
+  }
+
+}
