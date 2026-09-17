@@ -1137,6 +1137,8 @@ function showCoach(type) {
 function retryShape() {
 
   // Pastikan soal yang sama tetap digunakan
+ function retryShape() {
+
   if (!state.currentQuestion) {
 
     console.error(
@@ -1147,6 +1149,7 @@ function retryShape() {
   }
 
   renderShapeQuestion();
+}
 
   showScreen("shapeScreen");
 
@@ -1154,8 +1157,6 @@ function retryShape() {
 }
 
 function nextShape(){
-
- function nextShape(){
 
   const levelQuestions =
     shapeQuestions.filter(
