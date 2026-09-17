@@ -539,7 +539,36 @@ const coachScripts = {
   }
 
 };
+function toast(message){
 
+  const toastEl = document.createElement("div");
+
+  toastEl.textContent = message;
+
+  toastEl.style.position = "fixed";
+  toastEl.style.left = "50%";
+  toastEl.style.bottom = "30px";
+  toastEl.style.transform = "translateX(-50%)";
+  toastEl.style.zIndex = "9999";
+
+  toastEl.style.padding = "14px 22px";
+  toastEl.style.borderRadius = "16px";
+
+  toastEl.style.background = "#ffffff";
+  toastEl.style.color = "#333";
+
+  toastEl.style.fontSize = "16px";
+  toastEl.style.fontWeight = "800";
+
+  toastEl.style.boxShadow =
+    "0 8px 25px rgba(0,0,0,0.15)";
+
+  document.body.appendChild(toastEl);
+
+  setTimeout(() => {
+    toastEl.remove();
+  }, 1800);
+}
 function showScreen(id) {
 
   document.querySelectorAll(".screen").forEach(screen => {
