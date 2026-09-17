@@ -648,56 +648,75 @@ function startShapeLab(){
 
 function renderShapeQuestion(){
 
-  // ==========================================
-  // AMBIL SOAL SESUAI LEVEL
-  // ==========================================
+  const level = state.shapeLevel;
 
   const levelQuestions =
-    shapeQuestions.filter(
-      q => q.level === state.shapeLevel
-    );
+    shapeQuestions.filter(q => q.level === level);
 
-
-  // Cari soal berdasarkan ID/index di level
-  const q =
-    levelQuestions.find(
-      item => item.id === state.shapeIndex
-    );
-
+  const q = levelQuestions[state.shapeIndex];
 
   if(!q){
-
-    console.error(
-      "Soal tidak ditemukan:",
-      state.shapeIndex,
-      "Level:",
-      state.shapeLevel
-    );
-
+    console.error("Soal Shape Lab tidak ditemukan.");
     return;
   }
 
-
-  // Simpan soal aktif
   state.currentQuestion = q;
 
+  /* =========================
+     TENTUKAN HALAMAN LEVEL
+  ========================= */
 
-  // ==========================================
-  // COUNTER LEVEL
-  // ==========================================
+  const screenMap = {
+    1: "shapeScreen",
+    2: "shapeLevel2Screen",
+    3: "shapeLevel3Screen",
+    4: "shapeLevel4Screen"
+  };
 
-  document.getElementById("shapeCounter").textContent =
-    `Level ${state.shapeLevel} · Soal ${
-      levelQuestions.indexOf(q) + 1
-    }/${levelQuestions.length}`;
+  const counterMap = {
+    1: "shapeCounter",
+    2: "shapeCounter2",
+    3: "shapeCounter3",
+    4: "shapeCounter4"
+  };
+
+  const questionMap = {
+    1: "shapeQuestion",
+    2: "shapeQuestion2",
+    3: "shapeQuestion3",
+    4: "shapeQuestion4"
+  };
+
+  const optionsMap = {
+    1: "shapeOptions",
+    2: "shapeOptions2",
+    3: "shapeOptions3",
+    4: "shapeOptions4"
+  };
+
+  const feedbackMap = {
+    1: "feedbackArea",
+    2: "feedbackArea2",
+    3: "feedbackArea3",
+    4: "feedbackArea4"
+  };
+
+  const screenId = screenMap[level];
+
+  const counterId = counterMap[level];
+
+  const questionId = questionMap[level];
+
+  const optionsId = optionsMap[level];
+
+  const feedbackId = feedbackMap[level];
 
 
-  // ==========================================
-  // MODE TRY AGAIN / THINK
-  // ==========================================
+  /* =========================
+     MODE THINK / RETRY
+  ========================= */
 
   let modeText = "";
-
 
   if(state.currentWrongAnswer){
 
@@ -722,9 +741,9 @@ function renderShapeQuestion(){
   }
 
 
-  // ==========================================
-  // TAMPILKAN SOAL
-  // ==========================================
+  /* =========================
+     TAMPILKAN SOAL
+  ========================= */
 
   let html = `
 
@@ -741,9 +760,9 @@ function renderShapeQuestion(){
   `;
 
 
-  // ==========================================
-  // DIAGRAM
-  // ==========================================
+  /* =========================
+     DIAGRAM
+  ========================= */
 
   if(q.diagram){
 
@@ -766,9 +785,84 @@ function renderShapeQuestion(){
   }
 
 
-  document.getElementById("shapeQuestion")
-    .innerHTML = html;
+  const questionBox =
+    document.getElementById(questionId);
 
+  if(questionBox){
+    questionBox.innerHTML = html;
+  }
+
+
+  /* =========================
+     COUNTER
+  ========================= */
+
+  const counter =
+    document.getElementById(counterId);
+
+  if(counter){
+
+    counter.textContent =
+      `Soal ${state.shapeIndex + 1}/${levelQuestions.length}`;
+
+  }
+
+
+  /* =========================
+     PILIHAN JAWABAN
+  ========================= */
+
+  const box =
+    document.getElementById(optionsId);
+
+  if(!box) return;
+
+  box.innerHTML = "";
+
+
+  /* =========================
+     FEEDBACK
+  ========================= */
+
+  const feedback =
+    document.getElementById(feedbackId);
+
+  if(feedback){
+    feedback.innerHTML = "";
+  }
+
+
+  /* =========================
+     BUAT TOMBOL JAWABAN
+  ========================= */
+
+  q.opts.forEach((opt,i)=>{
+
+    const b =
+      document.createElement("button");
+
+    b.className = "option-btn";
+
+    b.textContent =
+      String.fromCharCode(65+i) + ". " + opt;
+
+    b.onclick =
+      () => answerShape(i);
+
+    box.appendChild(b);
+
+  });
+
+
+  /* =========================
+     TAMPILKAN HALAMAN LEVEL
+  ========================= */
+
+  showScreen(screenId);
+
+  updateProgress(screenId);
+
+}
 
   // ==========================================
   // PILIHAN JAWABAN
@@ -1092,9 +1186,7 @@ function retryShape() {
 
 function nextShape(){
 
-  // ==========================================
-  // SOAL DALAM LEVEL SAAT INI
-  // ==========================================
+ function nextShape(){
 
   const levelQuestions =
     shapeQuestions.filter(
@@ -1102,23 +1194,13 @@ function nextShape(){
     );
 
 
-  const currentPosition =
-    levelQuestions.findIndex(
-      q => q.id === state.shapeIndex
-    );
+  /* =========================
+     MASIH ADA SOAL DI LEVEL INI
+  ========================= */
 
+  if(state.shapeIndex < levelQuestions.length - 1){
 
-  // ==========================================
-  // MASIH ADA SOAL DI LEVEL YANG SAMA
-  // ==========================================
-
-  if(
-    currentPosition <
-    levelQuestions.length - 1
-  ){
-
-    state.shapeIndex =
-      levelQuestions[currentPosition + 1].id;
+    state.shapeIndex++;
 
     state.currentWrongAnswer = null;
     state.selectedError = null;
@@ -1129,39 +1211,28 @@ function nextShape(){
   }
 
 
-  // ==========================================
-  // LEVEL SELESAI
-  // ==========================================
+  /* =========================
+     PINDAH KE LEVEL BERIKUTNYA
+  ========================= */
 
   if(state.shapeLevel < 4){
 
     state.shapeLevel++;
 
-    // Ambil soal pertama pada level berikutnya
-    const nextLevelQuestions =
-      shapeQuestions.filter(
-        q => q.level === state.shapeLevel
-      );
-
-    state.shapeIndex =
-      nextLevelQuestions[0].id;
+    state.shapeIndex = 0;
 
     state.currentWrongAnswer = null;
     state.selectedError = null;
 
     renderShapeQuestion();
 
-    toast(
-      `🎉 Level ${state.shapeLevel - 1} selesai! Sekarang masuk Level ${state.shapeLevel}.`
-    );
-
     return;
   }
 
 
-  // ==========================================
-  // SEMUA LEVEL SELESAI
-  // ==========================================
+  /* =========================
+     SEMUA LEVEL SELESAI
+  ========================= */
 
   showScreen("reflectionScreen");
 
