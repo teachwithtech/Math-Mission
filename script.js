@@ -864,41 +864,6 @@ function renderShapeQuestion(){
 
 }
 
-  // ==========================================
-  // PILIHAN JAWABAN
-  // ==========================================
-
-  const box =
-    document.getElementById("shapeOptions");
-
-  box.innerHTML = "";
-
-
-  document.getElementById("feedbackArea")
-    .innerHTML = "";
-
-
-  q.opts.forEach((opt,i)=>{
-
-    const b =
-      document.createElement("button");
-
-    b.className = "option-btn";
-
-    b.textContent =
-      String.fromCharCode(65+i) +
-      ". " +
-      opt;
-
-    b.onclick =
-      () => answerShape(i);
-
-    box.appendChild(b);
-
-  });
-
-}
-
 // ============================================
 // JAWAB SOAL SHAPE
 // ============================================
