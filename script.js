@@ -1134,6 +1134,10 @@ function showCoach(type) {
 // COBA LAGI
 // ============================================
 
+// ============================================
+// COBA LAGI
+// ============================================
+
 function retryShape() {
 
   // Pastikan soal yang sama tetap digunakan
@@ -1146,13 +1150,14 @@ function retryShape() {
     return;
   }
 
+  // Kembali ke level tempat soal berasal
   renderShapeQuestion();
 }
 
-  showScreen("shapeScreen");
 
-  updateProgress("shapeScreen");
-}
+// ============================================
+// NEXT SHAPE
+// ============================================
 
 function nextShape(){
 
@@ -1205,5 +1210,4 @@ function nextShape(){
   showScreen("reflectionScreen");
 
   updateProgress("reflectionScreen");
-
 }
